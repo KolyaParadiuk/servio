@@ -8,9 +8,12 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:servio/app/localization/app_translation_delegate.dart';
 import 'package:servio/app/localization/application.dart';
 import 'package:servio/app/locator.dart';
+import 'package:servio/blocs/drawer_bloc/drawer_bloc.dart';
 import 'package:servio/caches/preferences.dart';
 import 'package:servio/constants/app_routes.dart';
 import 'package:servio/routes/router.dart';
+
+import 'constants/app_colors.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,7 +23,7 @@ void main() async {
 
   await setupLocator();
 
-  runApp(App());
+  runApp(RestartWidget(child: App()));
 }
 
 class App extends StatelessWidget {
@@ -45,7 +48,7 @@ class _ServioState extends State<_Servio> {
     newLocale: Locale(application.defaultLocaleCode),
   );
   bool isAppActive = false;
-  String initialRoute = RoutePaths.settings;
+  String initialRoute = RoutePaths.welcome;
 
   @override
   void initState() {
@@ -61,29 +64,62 @@ class _ServioState extends State<_Servio> {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       designSize: Size(375, 922),
-      builder: () => GetMaterialApp(
-        localizationsDelegates: [
-          _newLocaleDelegate,
-          GlobalCupertinoLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
+      builder: () => MultiBlocProvider(
+        providers: [
+          BlocProvider<DrawerBloc>(create: (_) => DrawerBloc()),
         ],
-        supportedLocales: application.supportedLocales(),
-        localeResolutionCallback: (locale, supportedLocales) {
-          for (var supportedLocaleLanguage in supportedLocales) {
-            if (supportedLocaleLanguage.languageCode == locale!.languageCode &&
-                supportedLocaleLanguage.countryCode == locale.countryCode) {
-              return supportedLocaleLanguage;
+        child: GetMaterialApp(
+          localizationsDelegates: [
+            _newLocaleDelegate,
+            GlobalCupertinoLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+          ],
+          supportedLocales: application.supportedLocales(),
+          localeResolutionCallback: (locale, supportedLocales) {
+            for (var supportedLocaleLanguage in supportedLocales) {
+              if (supportedLocaleLanguage.languageCode == locale!.languageCode &&
+                  supportedLocaleLanguage.countryCode == locale.countryCode) {
+                return supportedLocaleLanguage;
+              }
             }
-          }
-          return supportedLocales.first;
-        },
-        onGenerateRoute: generateRoute,
-        initialRoute: initialRoute,
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
+            return supportedLocales.first;
+          },
+          onGenerateRoute: generateRoute,
+          initialRoute: initialRoute,
+          theme: ThemeData(
+            primaryColor: kMain,
+          ),
         ),
       ),
     );
+  }
+}
+
+class RestartWidget extends StatefulWidget {
+  RestartWidget({required this.child});
+
+  final Widget child;
+
+  static void restartApp(BuildContext context) {
+    context.findAncestorStateOfType<_RestartWidgetState>()!.restartApp();
+  }
+
+  @override
+  _RestartWidgetState createState() => _RestartWidgetState();
+}
+
+class _RestartWidgetState extends State<RestartWidget> {
+  Key key = UniqueKey();
+
+  void restartApp() {
+    setState(() {
+      key = UniqueKey();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return KeyedSubtree(key: key, child: widget.child);
   }
 }
