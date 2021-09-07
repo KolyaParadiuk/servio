@@ -62,11 +62,13 @@ class _ServioState extends State<_Servio> {
 
   @override
   Widget build(BuildContext context) {
+    final bloc = DrawerBloc();
+    bloc..add(InitEvent());
     return ScreenUtilInit(
       designSize: Size(375, 922),
       builder: () => MultiBlocProvider(
         providers: [
-          BlocProvider<DrawerBloc>(create: (_) => DrawerBloc()),
+          BlocProvider<DrawerBloc>(create: (_) => bloc),
         ],
         child: GetMaterialApp(
           localizationsDelegates: [

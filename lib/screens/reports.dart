@@ -4,18 +4,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:get/get.dart';
 import 'package:servio/app/localization/translations.dart';
+import 'package:servio/app/locator.dart';
+import 'package:servio/caches/preferences.dart';
 import 'package:servio/components/drawer.dart';
 import 'package:servio/constants/app_strings.dart';
+import 'package:servio/models/report.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class ReportsPage extends StatefulWidget {
+  final Report report;
+  ReportsPage(this.report);
   @override
   ReportsPageState createState() => ReportsPageState();
 }
 
 class ReportsPageState extends State<ReportsPage> {
   bool isLoading = true;
-
   @override
   void initState() {
     super.initState();
@@ -24,10 +28,12 @@ class ReportsPageState extends State<ReportsPage> {
 
   @override
   Widget build(BuildContext context) {
+    Preferences prefs = locator<Preferences>();
+    final reportUrl = '${prefs.getServerAddress()}/template/get/${widget.report.id}';
     return Scaffold(
       drawer: AppDrawer(),
       appBar: AppBar(
-        title: Text(tr(AppStrings.reports)),
+        title: Text(widget.report.name),
       ),
       body: Stack(
         children: [
@@ -38,7 +44,7 @@ class ReportsPageState extends State<ReportsPage> {
                 content: Text('Возникла ошибка при загрузке страницы!\n${e.description}'),
               ));
             },
-            initialUrl: 'https://demo.servio.support/WD/Reports/GenerateReport?id=30&simple=true',
+            initialUrl: reportUrl,
             javascriptMode: JavascriptMode.unrestricted,
             onPageFinished: (finish) {
               setState(() {

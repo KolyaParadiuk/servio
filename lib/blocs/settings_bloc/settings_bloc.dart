@@ -7,6 +7,7 @@ import 'package:meta/meta.dart';
 import 'package:servio/app/locator.dart';
 import 'package:servio/caches/preferences.dart';
 import 'package:servio/constants/app_routes.dart';
+import 'package:servio/services/network/api_impl.dart';
 
 part 'settings_event.dart';
 part 'settings_state.dart';
@@ -16,6 +17,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   final addressInputController = TextEditingController();
   final loginInputController = TextEditingController();
   final passwordInputController = TextEditingController();
+  final ImplApi api = locator<ImplApi>();
   SettingsBloc() : super(SettingsInit()) {
     add(InitEvent());
   }
@@ -35,10 +37,16 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       );
     } else if (event is SubmitEvent) {
       if (_validateInputs()) {
-        prefs.setServerAddress(addressInputController.text);
-        prefs.setLogin(loginInputController.text);
-        prefs.setPassword(passwordInputController.text);
-        Get.offAllNamed(RoutePaths.digests);
+        try {
+          api.updateBaseUrl(addressInputController.text + '/api');
+          final loginResponse = await api.authentification(loginInputController.text, passwordInputController.text);
+          api.updateHeaders(loginResponse.token);
+          prefs.setServerAddress(addressInputController.text);
+          prefs.setLogin(loginInputController.text);
+          prefs.setPassword(passwordInputController.text);
+          prefs.setToken(loginResponse.token);
+          Get.offAllNamed(RoutePaths.digests);
+        } catch (e) {}
       }
     }
   }

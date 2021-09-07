@@ -4,3 +4,8 @@ part of 'drawer_bloc.dart';
 abstract class DrawerState {}
 
 class DrawerInitial extends DrawerState {}
+
+class ReportsLoaded extends DrawerState {
+  final List<Report> reports;
+  ReportsLoaded(this.reports);
+}

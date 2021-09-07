@@ -7,3 +7,5 @@ class ExitEvent extends DrawerEvent {
   final BuildContext context;
   ExitEvent(this.context);
 }
+
+class InitEvent extends DrawerEvent {}
