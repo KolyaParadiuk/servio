@@ -2,11 +2,10 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:meta/meta.dart';
 import 'package:servio/app/locator.dart';
 import 'package:servio/caches/preferences.dart';
-import 'package:servio/constants/app_routes.dart';
+import 'package:servio/main.dart';
 import 'package:servio/services/network/api_impl.dart';
 
 part 'settings_event.dart';
@@ -37,6 +36,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       );
     } else if (event is SubmitEvent) {
       if (_validateInputs()) {
+        yield SettingsLoading();
         try {
           api.updateBaseUrl(addressInputController.text + '/api');
           final loginResponse = await api.authentification(loginInputController.text, passwordInputController.text);
@@ -45,8 +45,15 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
           prefs.setLogin(loginInputController.text);
           prefs.setPassword(passwordInputController.text);
           prefs.setToken(loginResponse.token);
-          Get.offAllNamed(RoutePaths.digests);
-        } catch (e) {}
+          RestartWidget.restartApp(event.context);
+        } catch (e) {
+          yield SettingsControllersState(
+            addressInputController,
+            loginInputController,
+            passwordInputController,
+            errorMessage: e.toString(),
+          );
+        }
       }
     }
   }

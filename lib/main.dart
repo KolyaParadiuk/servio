@@ -49,11 +49,11 @@ class _ServioState extends State<_Servio> {
   );
   bool isAppActive = false;
   String initialRoute = RoutePaths.welcome;
+  Preferences prefs = locator<Preferences>();
 
   @override
   void initState() {
     super.initState();
-    Preferences prefs = locator<Preferences>();
     isAppActive = prefs.getLogin().isNotEmpty && prefs.getPassword().isNotEmpty && prefs.getServerAddress().isNotEmpty;
     if (isAppActive) {
       initialRoute = RoutePaths.digests;
@@ -63,7 +63,7 @@ class _ServioState extends State<_Servio> {
   @override
   Widget build(BuildContext context) {
     final bloc = DrawerBloc();
-    bloc..add(InitEvent());
+    if (prefs.getServerAddress().isNotEmpty) bloc..add(InitEvent());
     return ScreenUtilInit(
       designSize: Size(375, 922),
       builder: () => MultiBlocProvider(

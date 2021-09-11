@@ -20,7 +20,15 @@ class SettingsScreen extends StatelessWidget {
       body: SafeArea(
         child: Container(
             padding: EdgeInsets.symmetric(horizontal: 8.w),
-            child: BlocBuilder<SettingsBloc, SettingsState>(
+            child: BlocConsumer<SettingsBloc, SettingsState>(
+              listener: (context, state) {
+                if (state is SettingsControllersState) {
+                  if (state.errorMessage != null) {
+                    final snackBar = SnackBar(content: Text(state.errorMessage ?? "Error"));
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  }
+                }
+              },
               builder: (context, state) {
                 if (state is SettingsControllersState)
                   return Column(
@@ -45,7 +53,7 @@ class SettingsScreen extends StatelessWidget {
                       ),
                       TextButton(
                         onPressed: () {
-                          BlocProvider.of<SettingsBloc>(context).add(SubmitEvent());
+                          BlocProvider.of<SettingsBloc>(context).add(SubmitEvent(context));
                         },
                         child: Text(tr(AppStrings.ok)),
                       )

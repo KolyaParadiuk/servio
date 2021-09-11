@@ -10,3 +10,5 @@ const kIsReport = "IsReport";
 const kName = "Name";
 
 const kDescription = "Description";
+
+const kType = "Type";
