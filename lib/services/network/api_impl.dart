@@ -1,10 +1,14 @@
 import 'package:dio/dio.dart';
 import 'package:servio/app/locator.dart';
 import 'package:servio/caches/preferences.dart';
+import 'package:servio/constants/value_constants.dart';
 import 'package:servio/models/authentication_response.dart';
 import 'package:servio/models/data_source.dart';
+import 'package:servio/models/digest.dart';
+import 'package:servio/models/digest_request.dart';
 import 'package:servio/models/report.dart';
 import 'package:servio/services/network/api.dart';
+import 'package:servio/utils/date.dart';
 
 class ImplApi extends Api {
   Dio _dio = Dio();
@@ -64,7 +68,6 @@ class ImplApi extends Api {
         "password": password,
       },
     );
-    if (response.statusCode != 200) throw throw Exception('Server error ${response.statusCode}');
     return (AuthenticationResponse.fromJson(response.data));
   }
 
@@ -73,7 +76,6 @@ class ImplApi extends Api {
     final response = await _postRequest(
       "/Report/Structure",
     );
-    if (response.statusCode != 200) throw throw Exception('Server error ${response.statusCode}');
     if (response.data is List) {
       return (response.data as List).map((e) => Report.fromJson(e)).toList();
     }
@@ -85,9 +87,43 @@ class ImplApi extends Api {
     final response = await _postRequest(
       "/Common/DataSources",
     );
-    if (response.statusCode != 200) throw throw Exception('Server error ${response.statusCode}');
-    if (response.data is List) {
-      return (response.data as List).map((e) => DataSource.fromJson(e)).toList();
+    final data = response.data;
+    if (data is List) {
+      return data.map((e) => DataSource.fromJson(e)).toList();
+    }
+    return ([]);
+  }
+
+  getDigest(DigestRequest requestData) async {
+    final response = await _postRequest(
+      "/Digest/Get",
+      data: requestData.toJson(),
+    );
+    return response.data;
+  }
+
+  @override
+  getHotelDigest(DateTime from, DateTime to, List<DataSource> sources) async {
+    final data = await getDigest(DigestRequest(
+      from: formatForApiRequest(from),
+      to: formatForApiRequest(to),
+      sources: sources.where((s) => s.type == kHotelType).toList(),
+    ));
+    if (data is List) {
+      return data.map((e) => HotelDigest.fromJson(e)).toList();
+    }
+    return ([]);
+  }
+
+  @override
+  getRestaurantDigest(DateTime from, DateTime to, List<DataSource> sources) async {
+    final data = await getDigest(DigestRequest(
+      from: formatForApiRequest(from),
+      to: formatForApiRequest(to),
+      sources: sources.where((s) => s.type == kRestaurantType).toList(),
+    ));
+    if (data is List) {
+      return data.map((e) => RestaurantDigest.fromJson(e)).toList();
     }
     return ([]);
   }

@@ -10,12 +10,15 @@ class DataSource {
   @JsonKey(name: kName)
   final String name;
 
+  final bool? isActive;
+
   @JsonKey(name: kType)
-  final String type;
+  final int type;
   DataSource({
     required this.id,
     required this.name,
     required this.type,
+    this.isActive = true,
   });
 
   factory DataSource.fromJson(Map<String, dynamic> json) => _$DataSourceFromJson(json);

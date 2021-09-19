@@ -2,11 +2,9 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:meta/meta.dart';
 import 'package:servio/app/locator.dart';
 import 'package:servio/caches/preferences.dart';
-import 'package:servio/constants/app_routes.dart';
 import 'package:servio/main.dart';
 import 'package:servio/models/report.dart';
 import 'package:servio/services/network/api_impl.dart';

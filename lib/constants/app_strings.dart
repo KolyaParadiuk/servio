@@ -10,4 +10,7 @@ class AppStrings {
   static const String digests = 'digests';
   static const String exit = 'exit';
   static const String reports = 'reports';
+
+  static const String dateFrom = 'date_from';
+  static const String dateTo = 'date_to';
 }

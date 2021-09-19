@@ -6,6 +6,6 @@ abstract class SettingsEvent {}
 class InitEvent extends SettingsEvent {}
 
 class SubmitEvent extends SettingsEvent {
-  BuildContext context;
+  final BuildContext context;
   SubmitEvent(this.context);
 }

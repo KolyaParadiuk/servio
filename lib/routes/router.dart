@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:servio/blocs/digests_bloc/digests_bloc.dart';
 import 'package:servio/blocs/settings_bloc/settings_bloc.dart';
 import 'package:servio/constants/app_routes.dart';
 import 'package:servio/models/report.dart';
@@ -28,7 +29,10 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case RoutePaths.digests:
       return MaterialPageRoute(
         settings: RouteSettings(name: RoutePaths.digests),
-        builder: (context) => DigestsScreen(),
+        builder: (context) => BlocProvider<DigestsBloc>(
+          create: (context) => DigestsBloc()..add(LoadDataSources()),
+          child: DigestsScreen(),
+        ),
       );
     case RoutePaths.reports:
       return MaterialPageRoute(
