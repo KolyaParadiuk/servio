@@ -9,5 +9,7 @@
     "exit": "Выход",
     "reports": "Отчеты",
     "date_from": "Дата с",
-    "date_to": "Дата по"
+    "date_to": "Дата по",
+    "restaurants": "Рестораны",
+    "hotels": "Отели"
 }

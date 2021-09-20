@@ -5,6 +5,7 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:servio/app/locator.dart';
 import 'package:servio/models/data_source.dart';
+import 'package:servio/models/digest.dart';
 import 'package:servio/services/network/api_impl.dart';
 
 part 'digests_event.dart';
@@ -27,11 +28,13 @@ class DigestsBloc extends Bloc<DigestsEvent, DigestsState> {
       add(LoadDigest());
     } else if (event is LoadDigest) {
       yield DataLoading();
-      // final hotelDigest = await api.getHotelDigest(from, to, dataSources);
+      final hotelDigest = await api.getHotelDigest(from, to, dataSources);
       final restaurantDigest = await api.getRestaurantDigest(from, to, dataSources);
       yield DigestData(
         from: from,
         to: to,
+        hotelDigest: hotelDigest,
+        restaurantDigest: restaurantDigest,
       );
     } else if (event is ChangeTimeFrom) {
       from = event.date;

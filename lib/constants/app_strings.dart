@@ -13,4 +13,7 @@ class AppStrings {
 
   static const String dateFrom = 'date_from';
   static const String dateTo = 'date_to';
+
+  static const String restaurants = 'restaurants';
+  static const String hotels = 'hotels';
 }
