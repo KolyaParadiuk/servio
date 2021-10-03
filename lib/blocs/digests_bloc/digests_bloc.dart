@@ -61,22 +61,22 @@ class DigestsBloc extends Bloc<DigestsEvent, DigestsState> {
         add(LoadDigest());
       }
     } else if (event is SwitchTodayDigestCheckbox) {
-      // from = DateTime.now().copyWith(
-      //   hour: 0,
-      //   minute: 0,
-      // );
-      // to = DateTime.now().copyWith(
-      //   hour: 23,
-      //   minute: 59,
-      // );
-      from = DateTime.parse("2021-09-17").copyWith(
+      from = DateTime.now().copyWith(
         hour: 0,
         minute: 0,
       );
-      to = DateTime.parse("2021-09-17").copyWith(
+      to = DateTime.now().copyWith(
         hour: 23,
         minute: 59,
       );
+      // from = DateTime.parse("2021-09-17").copyWith(
+      //   hour: 0,
+      //   minute: 0,
+      // );
+      // to = DateTime.parse("2021-09-17").copyWith(
+      //   hour: 23,
+      //   minute: 59,
+      // );
       showLastDay = true;
       showLastWeek = false;
       showLastMonth = false;
