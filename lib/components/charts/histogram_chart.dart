@@ -19,7 +19,7 @@ class GroupedBarChart extends StatelessWidget {
       animate: animate,
       barGroupingType: charts.BarGroupingType.grouped,
       barRendererDecorator: new charts.BarLabelDecorator<String>(
-        labelPadding: 0,
+        labelPadding: 2,
         outsideLabelStyleSpec: charts.TextStyleSpec(fontSize: 7),
       ),
       domainAxis: new charts.OrdinalAxisSpec(),
