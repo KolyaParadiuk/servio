@@ -23,48 +23,50 @@ class RestaurantDigestChart extends StatelessWidget {
   build(BuildContext context) {
     final bloc = BlocProvider.of<DigestsBloc>(context);
 
-    return Expanded(
-      child: ChartsPageView(
-        loading: this.loading,
-        children: <Widget>[
-          DigestLineChart(
-              title: tr(AppStrings.restaurants),
-              subTitle: tr(AppStrings.income),
-              seriesList: _createSeries(
-                dataSources: bloc.dataSources,
-                measureFn: (RestaurantDigestData dd, _) => dd.proceeds,
-              )),
-          DigestLineChart(
-              title: tr(AppStrings.restaurants),
-              subTitle: tr(AppStrings.averageInvoiceAmount),
-              seriesList: _createSeries(
-                dataSources: bloc.dataSources,
-                measureFn: (RestaurantDigestData dd, _) => dd.billTotal,
-              )),
-          DigestLineChart(
-              title: tr(AppStrings.restaurants),
-              subTitle: tr(AppStrings.averageAmountPerGuest),
-              seriesList: _createSeries(
-                dataSources: bloc.dataSources,
-                measureFn: (RestaurantDigestData dd, _) => dd.guestTotal,
-              )),
-          DigestLineChart(
-              title: tr(AppStrings.restaurants),
-              subTitle: tr(AppStrings.bills),
-              seriesList: _createSeries(
-                dataSources: bloc.dataSources,
-                measureFn: (RestaurantDigestData dd, _) => dd.billsCount,
-              )),
-          DigestLineChart(
-              title: tr(AppStrings.restaurants),
-              subTitle: tr(AppStrings.guests),
-              seriesList: _createSeries(
-                dataSources: bloc.dataSources,
-                measureFn: (RestaurantDigestData dd, _) => dd.guestsCount,
-              )),
-        ],
-      ),
-    );
+    return digests.length == 0 && !loading
+        ? SizedBox.shrink()
+        : Expanded(
+            child: ChartsPageView(
+              loading: this.loading,
+              children: <Widget>[
+                DigestLineChart(
+                    title: tr(AppStrings.restaurants),
+                    subTitle: tr(AppStrings.income),
+                    seriesList: _createSeries(
+                      dataSources: bloc.dataSources,
+                      measureFn: (RestaurantDigestData dd, _) => dd.proceeds,
+                    )),
+                DigestLineChart(
+                    title: tr(AppStrings.restaurants),
+                    subTitle: tr(AppStrings.averageInvoiceAmount),
+                    seriesList: _createSeries(
+                      dataSources: bloc.dataSources,
+                      measureFn: (RestaurantDigestData dd, _) => dd.billTotal,
+                    )),
+                DigestLineChart(
+                    title: tr(AppStrings.restaurants),
+                    subTitle: tr(AppStrings.averageAmountPerGuest),
+                    seriesList: _createSeries(
+                      dataSources: bloc.dataSources,
+                      measureFn: (RestaurantDigestData dd, _) => dd.guestTotal,
+                    )),
+                DigestLineChart(
+                    title: tr(AppStrings.restaurants),
+                    subTitle: tr(AppStrings.bills),
+                    seriesList: _createSeries(
+                      dataSources: bloc.dataSources,
+                      measureFn: (RestaurantDigestData dd, _) => dd.billsCount,
+                    )),
+                DigestLineChart(
+                    title: tr(AppStrings.restaurants),
+                    subTitle: tr(AppStrings.guests),
+                    seriesList: _createSeries(
+                      dataSources: bloc.dataSources,
+                      measureFn: (RestaurantDigestData dd, _) => dd.guestsCount,
+                    )),
+              ],
+            ),
+          );
   }
 
   List<charts.Series<RestaurantDigestData, DateTime>> _createSeries({

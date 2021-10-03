@@ -17,7 +17,26 @@ class DigestsScreen extends StatefulWidget {
   _DigestsScreenState createState() => _DigestsScreenState();
 }
 
-class _DigestsScreenState extends State<DigestsScreen> {
+class _DigestsScreenState extends State<DigestsScreen> with WidgetsBindingObserver {
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      BlocProvider.of<DigestsBloc>(context).add(LoadDigest());
+    }
+  }
+
+  @override
+  initState() {
+    super.initState();
+    WidgetsBinding.instance?.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance?.removeObserver(this);
+    super.dispose();
+  }
+
   @override
   build(BuildContext context) {
     return Scaffold(

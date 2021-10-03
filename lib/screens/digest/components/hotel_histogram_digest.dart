@@ -15,14 +15,16 @@ class HotelHistogramDigestChart extends StatelessWidget {
   });
   @override
   build(BuildContext context) {
-    return (Expanded(
-      child: loading
-          ? Loading()
-          : GroupedBarChart(
-              _createSeries(),
-              title: tr(AppStrings.hotels),
-            ),
-    ));
+    return (digests.length == 0 && !loading
+        ? SizedBox.shrink()
+        : Expanded(
+            child: loading
+                ? Loading()
+                : GroupedBarChart(
+                    _createSeries(),
+                    title: tr(AppStrings.hotels),
+                  ),
+          ));
   }
 
   List<charts.Series<HotelDigest, String>> _createSeries() {

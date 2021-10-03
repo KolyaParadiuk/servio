@@ -22,58 +22,60 @@ class HotelDigestsChart extends StatelessWidget {
   build(BuildContext context) {
     final bloc = BlocProvider.of<DigestsBloc>(context);
 
-    return Expanded(
-      child: ChartsPageView(
-        loading: this.loading,
-        children: <Widget>[
-          DigestLineChart(
-              title: tr(AppStrings.hotels),
-              subTitle: tr(AppStrings.income),
-              seriesList: _createSeries(
-                dataSources: bloc.dataSources,
-                measureFn: (HotelDigestData dd, _) => dd.dwellingPayment,
-              )),
-          DigestLineChart(
-              title: tr(AppStrings.hotels),
-              subTitle: tr(AppStrings.loading),
-              seriesList: _createSeries(
-                dataSources: bloc.dataSources,
-                measureFn: (HotelDigestData dd, _) {
-                  if (dd.loading is num) return dd.loading;
-                  return 0;
-                },
-              )),
-          DigestLineChart(
-              title: tr(AppStrings.hotels),
-              subTitle: tr(AppStrings.averageRate),
-              seriesList: _createSeries(
-                dataSources: bloc.dataSources,
-                measureFn: (HotelDigestData dd, _) => dd.sot,
-              )),
-          DigestLineChart(
-              title: tr(AppStrings.hotels),
-              subTitle: tr(AppStrings.incomeFromRoom),
-              seriesList: _createSeries(
-                dataSources: bloc.dataSources,
-                measureFn: (HotelDigestData dd, _) => dd.avrOnAllRoom,
-              )),
-          DigestLineChart(
-              title: tr(AppStrings.hotels),
-              subTitle: tr(AppStrings.roomsOccupied),
-              seriesList: _createSeries(
-                dataSources: bloc.dataSources,
-                measureFn: (HotelDigestData dd, _) => dd.roomsOccupied,
-              )),
-          DigestLineChart(
-              title: tr(AppStrings.hotels),
-              subTitle: tr(AppStrings.roomsInExploitation),
-              seriesList: _createSeries(
-                dataSources: bloc.dataSources,
-                measureFn: (HotelDigestData dd, _) => dd.roomsInExploitation,
-              )),
-        ],
-      ),
-    );
+    return digests.length == 0 && !loading
+        ? SizedBox.shrink()
+        : Expanded(
+            child: ChartsPageView(
+              loading: this.loading,
+              children: <Widget>[
+                DigestLineChart(
+                    title: tr(AppStrings.hotels),
+                    subTitle: tr(AppStrings.income),
+                    seriesList: _createSeries(
+                      dataSources: bloc.dataSources,
+                      measureFn: (HotelDigestData dd, _) => dd.dwellingPayment,
+                    )),
+                DigestLineChart(
+                    title: tr(AppStrings.hotels),
+                    subTitle: tr(AppStrings.loading),
+                    seriesList: _createSeries(
+                      dataSources: bloc.dataSources,
+                      measureFn: (HotelDigestData dd, _) {
+                        if (dd.loading is num) return dd.loading;
+                        return 0;
+                      },
+                    )),
+                DigestLineChart(
+                    title: tr(AppStrings.hotels),
+                    subTitle: tr(AppStrings.averageRate),
+                    seriesList: _createSeries(
+                      dataSources: bloc.dataSources,
+                      measureFn: (HotelDigestData dd, _) => dd.sot,
+                    )),
+                DigestLineChart(
+                    title: tr(AppStrings.hotels),
+                    subTitle: tr(AppStrings.incomeFromRoom),
+                    seriesList: _createSeries(
+                      dataSources: bloc.dataSources,
+                      measureFn: (HotelDigestData dd, _) => dd.avrOnAllRoom,
+                    )),
+                DigestLineChart(
+                    title: tr(AppStrings.hotels),
+                    subTitle: tr(AppStrings.roomsOccupied),
+                    seriesList: _createSeries(
+                      dataSources: bloc.dataSources,
+                      measureFn: (HotelDigestData dd, _) => dd.roomsOccupied,
+                    )),
+                DigestLineChart(
+                    title: tr(AppStrings.hotels),
+                    subTitle: tr(AppStrings.roomsInExploitation),
+                    seriesList: _createSeries(
+                      dataSources: bloc.dataSources,
+                      measureFn: (HotelDigestData dd, _) => dd.roomsInExploitation,
+                    )),
+              ],
+            ),
+          );
   }
 
   List<charts.Series<HotelDigestData, DateTime>> _createSeries({
