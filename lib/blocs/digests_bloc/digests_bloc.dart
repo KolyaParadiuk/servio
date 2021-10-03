@@ -69,6 +69,14 @@ class DigestsBloc extends Bloc<DigestsEvent, DigestsState> {
         hour: 23,
         minute: 59,
       );
+      // from = DateTime.parse("2021-09-17").copyWith(
+      //   hour: 0,
+      //   minute: 0,
+      // );
+      // to = DateTime.parse("2021-09-17").copyWith(
+      //   hour: 23,
+      //   minute: 59,
+      // );
       showLastDay = true;
       showLastWeek = false;
       showLastMonth = false;

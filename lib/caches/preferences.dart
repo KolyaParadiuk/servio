@@ -18,6 +18,8 @@ class Preferences {
   String getPassword() => _getValue(_password) ?? "";
   String getToken() => _getValue(_token) ?? "";
 
+  bool isAppActive() => getLogin().isNotEmpty && getPassword().isNotEmpty && getServerAddress().isNotEmpty;
+
   Future setServerAddress(String value) => _setValue(_serverAddress, value);
   Future setLogin(String value) => _setValue(_login, value);
   Future setPassword(String value) => _setValue(_password, value);

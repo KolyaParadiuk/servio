@@ -18,7 +18,7 @@ class GroupedBarChart extends StatelessWidget {
       seriesList,
       animate: animate,
       barGroupingType: charts.BarGroupingType.grouped,
-      // barRendererDecorator: new charts.BarLabelDecorator<String>(),
+      barRendererDecorator: new charts.BarLabelDecorator<String>(),
       domainAxis: new charts.OrdinalAxisSpec(),
       behaviors: [
         new charts.SeriesLegend(

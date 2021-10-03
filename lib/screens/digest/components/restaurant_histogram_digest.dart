@@ -28,14 +28,16 @@ class RestaurantHistogramDigestChart extends StatelessWidget {
         domainFn: (RestaurantDigest d, _) => d.title,
         measureFn: (RestaurantDigest d, _) => d.data.firstWhere((dd) => dd.isShadow == false).proceeds,
         data: digests,
-        labelAccessorFn: (RestaurantDigest d, _) => '${d.data.firstWhere((dd) => dd.isShadow == false).proceeds}',
+        labelAccessorFn: (RestaurantDigest d, _) =>
+            '${d.data.firstWhere((dd) => dd.isShadow == false).proceeds.toInt()}',
       ),
       new charts.Series<RestaurantDigest, String>(
         seriesColor: charts.Color.fromHex(code: "#4A88DA"),
         id: tr(AppStrings.averageInvoiceAmountShort),
         domainFn: (RestaurantDigest d, _) => d.title,
         measureFn: (RestaurantDigest d, _) => d.data.firstWhere((dd) => dd.isShadow == false).billTotal,
-        labelAccessorFn: (RestaurantDigest d, _) => '${d.data.firstWhere((dd) => dd.isShadow == false).billTotal}',
+        labelAccessorFn: (RestaurantDigest d, _) =>
+            '${d.data.firstWhere((dd) => dd.isShadow == false).billTotal.toInt()}',
         data: digests,
       ),
       new charts.Series<RestaurantDigest, String>(
@@ -43,7 +45,8 @@ class RestaurantHistogramDigestChart extends StatelessWidget {
         id: tr(AppStrings.averageAmountPerGuestShort),
         domainFn: (RestaurantDigest d, _) => d.title,
         measureFn: (RestaurantDigest d, _) => d.data.firstWhere((dd) => dd.isShadow == false).guestTotal,
-        labelAccessorFn: (RestaurantDigest d, _) => '${d.data.firstWhere((dd) => dd.isShadow == false).guestTotal}',
+        labelAccessorFn: (RestaurantDigest d, _) =>
+            '${d.data.firstWhere((dd) => dd.isShadow == false).guestTotal.toInt()}',
         data: digests,
       ),
       new charts.Series<RestaurantDigest, String>(
@@ -51,7 +54,8 @@ class RestaurantHistogramDigestChart extends StatelessWidget {
         id: tr(AppStrings.bills),
         domainFn: (RestaurantDigest d, _) => d.title,
         measureFn: (RestaurantDigest d, _) => d.data.firstWhere((dd) => dd.isShadow == false).billsCount,
-        labelAccessorFn: (RestaurantDigest d, _) => '${d.data.firstWhere((dd) => dd.isShadow == false).billsCount}',
+        labelAccessorFn: (RestaurantDigest d, _) =>
+            '${d.data.firstWhere((dd) => dd.isShadow == false).billsCount.toInt()}',
         data: digests,
       ),
       new charts.Series<RestaurantDigest, String>(
@@ -59,7 +63,8 @@ class RestaurantHistogramDigestChart extends StatelessWidget {
         id: tr(AppStrings.guests),
         domainFn: (RestaurantDigest d, _) => d.title,
         measureFn: (RestaurantDigest d, _) => d.data.firstWhere((dd) => dd.isShadow == false).guestsCount,
-        labelAccessorFn: (RestaurantDigest d, _) => '${d.data.firstWhere((dd) => dd.isShadow == false).guestsCount}',
+        labelAccessorFn: (RestaurantDigest d, _) =>
+            '${d.data.firstWhere((dd) => dd.isShadow == false).guestsCount.toInt()}',
         data: digests,
       ),
     ];

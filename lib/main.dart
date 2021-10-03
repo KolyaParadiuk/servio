@@ -13,6 +13,7 @@ import 'package:servio/blocs/drawer_bloc/drawer_bloc.dart';
 import 'package:servio/caches/preferences.dart';
 import 'package:servio/constants/app_routes.dart';
 import 'package:servio/routes/router.dart';
+import 'package:servio/services/network/api_impl.dart';
 
 import 'constants/app_colors.dart';
 
@@ -23,6 +24,8 @@ void main() async {
   await locator<Preferences>().openBox();
 
   await setupLocator();
+
+  await initApi();
 
   runApp(RestartWidget(child: App()));
 }
@@ -37,6 +40,19 @@ class App extends StatelessWidget {
 
 Future<void> initHive() async {
   await Hive.initFlutter();
+}
+
+Future<void> initApi() async {
+  final api = locator<ImplApi>();
+  final Preferences prefs = locator<Preferences>();
+  if (prefs.isAppActive()) {
+    final loginResponse = await api.authentification(
+      prefs.getLogin(),
+      prefs.getPassword(),
+    );
+    api.updateHeaders(loginResponse.token);
+    prefs.setToken(loginResponse.token);
+  }
 }
 
 class _Servio extends StatefulWidget {
@@ -55,7 +71,7 @@ class _ServioState extends State<_Servio> {
   @override
   void initState() {
     super.initState();
-    isAppActive = prefs.getLogin().isNotEmpty && prefs.getPassword().isNotEmpty && prefs.getServerAddress().isNotEmpty;
+    isAppActive = prefs.isAppActive();
     if (isAppActive) {
       initialRoute = RoutePaths.digests;
     }
