@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:servio/app/locator.dart';
 import 'package:servio/caches/preferences.dart';
 import 'package:servio/constants/value_constants.dart';
+import 'package:servio/models/auth_exception.dart';
 import 'package:servio/models/authentication_response.dart';
 import 'package:servio/models/data_source.dart';
 import 'package:servio/models/digest.dart';
@@ -27,8 +28,16 @@ class ImplApi extends Api {
       if (response.statusCode != 200)
         throw Exception("error ${response.statusCode} \n data:${response.data["error_description"]}");
     } on DioError catch (e) {
-      print(e.message);
-      throw Exception("error message ${e.message}; \n data:${e.response?.data["error_description"]}");
+      String message = "Ошибка сервера";
+      if (e.response?.statusCode == 400) {
+        message = e.response?.data["error_description"];
+      }
+      if (e.response?.statusCode == 404) {
+        message = "Сервер не найден";
+      }
+      print(message);
+
+      throw AuthException(message);
     }
 
     return response;

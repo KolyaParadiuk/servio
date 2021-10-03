@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:servio/app/localization/translations.dart';
 import 'package:servio/blocs/settings_bloc/settings_bloc.dart';
 import 'package:servio/components/drawer.dart';
+import 'package:servio/components/loading.dart';
 import 'package:servio/constants/app_strings.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:servio/constants/app_styles.dart';
@@ -59,9 +60,7 @@ class SettingsScreen extends StatelessWidget {
                       )
                     ],
                   );
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
+                return Loading();
               },
             )),
       ),
