@@ -11,5 +11,20 @@
     "date_from": "Дата с",
     "date_to": "Дата по",
     "restaurants": "Рестораны",
-    "hotels": "Отели"
+    "hotels": "Отели",
+    "day": "Сегодня",
+    "week": "Неделя",
+    "month": "Месяц",
+    "income": "Выручка",
+    "average_invoice_amount": "Средняя сумма по счету",
+    "average_amount_per_guest": "Средняя сумма по гостю",
+    "bills": "Счетов",
+    "guests": "Гостей",
+    "loading": "Загрузка",
+    "average_rate": "Средний Тариф",
+    "income_from_room": "Доход с номера",
+    "rooms_occupied": "Номеров занято",
+    "rooms_in_exploitation": "Номеров всего",
+    "average_invoice_amount_short": "Ср. сум. по счету",
+    "average_amount_per_guest_short": "Ср. сум. по гостю"
 }

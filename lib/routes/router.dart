@@ -4,7 +4,7 @@ import 'package:servio/blocs/digests_bloc/digests_bloc.dart';
 import 'package:servio/blocs/settings_bloc/settings_bloc.dart';
 import 'package:servio/constants/app_routes.dart';
 import 'package:servio/models/report.dart';
-import 'package:servio/screens/digests.dart';
+import 'package:servio/screens/digest/digests.dart';
 import 'package:servio/screens/reports.dart';
 import 'package:servio/screens/settings.dart';
 

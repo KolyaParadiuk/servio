@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:servio/app/localization/translations.dart';
 import 'package:servio/blocs/drawer_bloc/drawer_bloc.dart';
 import 'package:servio/components/drawer_reports_group.dart';
+import 'package:servio/constants/app_colors.dart';
 import 'package:servio/constants/app_routes.dart';
 import 'package:servio/constants/app_strings.dart';
 
@@ -60,14 +62,18 @@ class AppDrawer extends StatelessWidget {
       margin: EdgeInsets.zero,
       padding: EdgeInsets.zero,
       decoration: BoxDecoration(
-        color: Colors.blue[900],
+        color: kMain,
       ),
       child: Center(
-          child: Text("SERVIO",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 32.sp,
-              ))),
+          child: Text(
+        "SERVIO",
+        style: GoogleFonts.audiowide(
+          textStyle: TextStyle(
+            color: Colors.white,
+            fontSize: 32.sp,
+          ),
+        ),
+      )),
     );
   }
 

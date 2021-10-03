@@ -19,3 +19,18 @@ class ChangeTimeTo extends DigestsEvent {
   final DateTime date;
   ChangeTimeTo(this.date);
 }
+
+class SwitchTodayDigestCheckbox extends DigestsEvent {
+  final bool value;
+  SwitchTodayDigestCheckbox(this.value);
+}
+
+class SwitchWeekDigestCheckbox extends DigestsEvent {
+  final bool value;
+  SwitchWeekDigestCheckbox(this.value);
+}
+
+class SwitchMonthDigestCheckbox extends DigestsEvent {
+  final bool value;
+  SwitchMonthDigestCheckbox(this.value);
+}

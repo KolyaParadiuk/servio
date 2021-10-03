@@ -22,22 +22,22 @@ class _DateInputState extends State<DateInput> {
 
   @override
   build(BuildContext context) {
+    dateinput.text = widget.initValue == null ? '' : formatForInputField(widget.initValue!);
     return Container(
-        padding: EdgeInsets.only(
-          left: 5.w,
-        ),
         decoration: BoxDecoration(
             color: Colors.black12,
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(10),
               topRight: Radius.circular(10),
             )),
-        height: 60,
+        height: 40,
         width: 160.w,
         child: Center(
             child: TextField(
           controller: dateinput, //editing controller of this TextField
           decoration: InputDecoration(
+            contentPadding: EdgeInsets.only(left: 5, top: 5, bottom: 8),
+
             labelText: widget.lable, //label text of field
           ),
           readOnly: true, //set it true, so that user will not able to edit text

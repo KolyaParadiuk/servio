@@ -4,6 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:servio/app/localization/app_translation_delegate.dart';
 import 'package:servio/app/localization/application.dart';
@@ -91,6 +92,12 @@ class _ServioState extends State<_Servio> {
           initialRoute: initialRoute,
           theme: ThemeData(
             primaryColor: kMain,
+            textTheme: GoogleFonts.montserratTextTheme(
+              Theme.of(context).textTheme.apply(
+                    bodyColor: kMainText,
+                    displayColor: kMainText,
+                  ),
+            ),
           ),
         ),
       ),

@@ -81,7 +81,8 @@ class HotelDigestData {
 
   @JsonKey(name: kAvrOnAllRoom)
   final double avrOnAllRoom;
-
+  @JsonKey(name: kIsShadow)
+  final bool isShadow;
   HotelDigestData(
       {this.loading,
       required this.date,
@@ -94,6 +95,7 @@ class HotelDigestData {
       required this.avrOnAllRoom,
       required this.coefficientRooms,
       required this.dwellingPayment,
+      required this.isShadow,
       this.sot});
   factory HotelDigestData.fromJson(Map<String, dynamic> json) => _$HotelDigestDataFromJson(json);
 

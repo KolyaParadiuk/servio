@@ -52,6 +52,7 @@ HotelDigestData _$HotelDigestDataFromJson(Map<String, dynamic> json) {
     avrOnAllRoom: (json['AvrOnAllRoom'] as num).toDouble(),
     coefficientRooms: (json['CoefficientRooms'] as num).toDouble(),
     dwellingPayment: (json['DwellingPayment'] as num).toDouble(),
+    isShadow: json['IsShadow'] as bool,
     sot: (json['SOT'] as num?)?.toDouble(),
   );
 }
@@ -70,6 +71,7 @@ Map<String, dynamic> _$HotelDigestDataToJson(HotelDigestData instance) =>
       'DwellingPayment': instance.dwellingPayment,
       'SOT': instance.sot,
       'AvrOnAllRoom': instance.avrOnAllRoom,
+      'IsShadow': instance.isShadow,
     };
 
 RestaurantDigest _$RestaurantDigestFromJson(Map<String, dynamic> json) {
