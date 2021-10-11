@@ -33,13 +33,13 @@ class _CustomCheckboxState extends State<CustomCheckbox> {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(widget.title),
         Checkbox(
           checkColor: Colors.white,
           fillColor: MaterialStateProperty.resolveWith(getColor),
           value: widget.isChecked,
           onChanged: widget.onChanged,
         ),
+        Text(widget.title),
       ],
     );
   }

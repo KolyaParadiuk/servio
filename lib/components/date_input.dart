@@ -43,10 +43,11 @@ class _DateInputState extends State<DateInput> {
           readOnly: true, //set it true, so that user will not able to edit text
           onTap: () async {
             DateTime? pickedDate = await showDatePicker(
-                context: context,
-                initialDate: widget.initValue == null ? DateTime.now() : widget.initValue!,
-                firstDate: DateTime(2000), //DateTime.now() - not to allow to choose before today.
-                lastDate: DateTime.now());
+              context: context,
+              initialDate: widget.initValue == null ? DateTime.now() : widget.initValue!,
+              firstDate: DateTime(2000), //DateTime.now() - not to allow to choose before today.
+              lastDate: DateTime(3000),
+            );
 
             if (pickedDate != null) {
               String formattedDate = formatForInputField(pickedDate);

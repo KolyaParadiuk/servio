@@ -19,7 +19,7 @@ class DigestsBloc extends Bloc<DigestsEvent, DigestsState> {
   List<DataSource> dataSources = [];
   DateTime from = DateTime.now();
   DateTime to = DateTime.now();
-  bool showLastDay = false;
+  bool showLastDay = true;
   bool showLastWeek = false;
   bool showLastMonth = false;
   @override
@@ -29,7 +29,7 @@ class DigestsBloc extends Bloc<DigestsEvent, DigestsState> {
     if (event is LoadDataSources) {
       yield DataLoading();
       dataSources = await api.getDataSources();
-      add(LoadDigest());
+      add(SwitchTodayDigestCheckbox(true));
     } else if (event is LoadDigest) {
       final state = this.state;
       if (state is DigestData)
