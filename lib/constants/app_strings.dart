@@ -39,4 +39,5 @@ class AppStrings {
   static const String roomsOccupied = 'rooms_occupied';
 
   static const String roomsInExploitation = 'rooms_in_exploitation';
+  static const String updateApp = 'update_app';
 }

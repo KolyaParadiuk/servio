@@ -7,6 +7,7 @@ import 'package:servio/models/authentication_response.dart';
 import 'package:servio/models/data_source.dart';
 import 'package:servio/models/digest.dart';
 import 'package:servio/models/digest_request.dart';
+import 'package:servio/models/mobile_settings.dart';
 import 'package:servio/models/report.dart';
 import 'package:servio/services/network/api.dart';
 import 'package:servio/utils/date.dart';
@@ -122,5 +123,13 @@ class ImplApi extends Api {
       return data.map((e) => RestaurantDigest.fromJson(e)).toList();
     }
     return ([]);
+  }
+
+  @override
+  getMobileSettings() async {
+    final response = await _postRequest(
+      "/Common/GetMobileSettings",
+    );
+    return MobildSettings.fromJson(response.data);
   }
 }

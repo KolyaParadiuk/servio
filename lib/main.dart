@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:servio/app/app_update.dart';
 import 'package:servio/app/localization/app_translation_delegate.dart';
 import 'package:servio/app/localization/application.dart';
 import 'package:servio/app/locator.dart';
@@ -27,6 +28,8 @@ void main() async {
   await setupLocator();
 
   await initApi();
+
+  await locator<AppUpdate>().initialise();
 
   runApp(RestartWidget(child: App()));
 }
@@ -72,13 +75,18 @@ class _ServioState extends State<_Servio> {
   bool isAppActive = false;
   String initialRoute = RoutePaths.welcome;
   Preferences prefs = locator<Preferences>();
+  bool isNeedUpdate = locator<AppUpdate>().isNeedUpdate;
 
   @override
   void initState() {
     super.initState();
-    isAppActive = prefs.isAppActive();
-    if (isAppActive) {
-      initialRoute = RoutePaths.digests;
+    if (isNeedUpdate) {
+      initialRoute = RoutePaths.appUpdate;
+    } else {
+      isAppActive = prefs.isAppActive();
+      if (isAppActive) {
+        initialRoute = RoutePaths.digests;
+      }
     }
   }
 

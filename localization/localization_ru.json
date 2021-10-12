@@ -26,5 +26,6 @@
     "rooms_occupied": "Номеров занято",
     "rooms_in_exploitation": "Номеров всего",
     "average_invoice_amount_short": "Ср. сум. по счету",
-    "average_amount_per_guest_short": "Ср. сум. по гостю"
+    "average_amount_per_guest_short": "Ср. сум. по гостю",
+    "update_app": "Приложение устарело!\n Обновите его пожалуйста!"
 }

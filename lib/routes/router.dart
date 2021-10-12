@@ -4,6 +4,7 @@ import 'package:servio/blocs/digests_bloc/digests_bloc.dart';
 import 'package:servio/blocs/settings_bloc/settings_bloc.dart';
 import 'package:servio/constants/app_routes.dart';
 import 'package:servio/models/report.dart';
+import 'package:servio/screens/app_update.dart';
 import 'package:servio/screens/digest/digests.dart';
 import 'package:servio/screens/reports.dart';
 import 'package:servio/screens/settings.dart';
@@ -38,6 +39,11 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return MaterialPageRoute(
         settings: RouteSettings(name: RoutePaths.reports),
         builder: (context) => ReportsPage(settings.arguments as Report),
+      );
+    case RoutePaths.appUpdate:
+      return MaterialPageRoute(
+        settings: RouteSettings(name: RoutePaths.appUpdate),
+        builder: (context) => AppNeedUpdatePage(),
       );
     default:
       return MaterialPageRoute(

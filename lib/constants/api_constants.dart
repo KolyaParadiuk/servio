@@ -46,3 +46,6 @@ const kIsShadow = "IsShadow";
 const kFrom = "From";
 const kTo = "To";
 const kSources = "Sources";
+
+//Mobile settings
+const kVersion = "Version";
