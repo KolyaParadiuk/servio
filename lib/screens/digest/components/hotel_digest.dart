@@ -30,14 +30,14 @@ class HotelDigestsChart extends StatelessWidget {
               children: <Widget>[
                 DigestLineChart(
                     title: tr(AppStrings.hotels),
-                    subTitle: tr(AppStrings.income),
+                    subTitle: _createSubtitle(tr(AppStrings.income), (d) => d.summary.dwellingPayment),
                     seriesList: _createSeries(
                       dataSources: bloc.dataSources,
                       measureFn: (HotelDigestData dd, _) => dd.dwellingPayment,
                     )),
                 DigestLineChart(
                     title: tr(AppStrings.hotels),
-                    subTitle: tr(AppStrings.loading),
+                    subTitle: _createSubtitle(tr(AppStrings.loading), (d) => d.summary.loading),
                     seriesList: _createSeries(
                       dataSources: bloc.dataSources,
                       measureFn: (HotelDigestData dd, _) {
@@ -47,28 +47,28 @@ class HotelDigestsChart extends StatelessWidget {
                     )),
                 DigestLineChart(
                     title: tr(AppStrings.hotels),
-                    subTitle: tr(AppStrings.averageRate),
+                    subTitle: _createSubtitle(tr(AppStrings.averageRate), (d) => d.summary.sot ?? 0),
                     seriesList: _createSeries(
                       dataSources: bloc.dataSources,
                       measureFn: (HotelDigestData dd, _) => dd.sot,
                     )),
                 DigestLineChart(
                     title: tr(AppStrings.hotels),
-                    subTitle: tr(AppStrings.incomeFromRoom),
+                    subTitle: _createSubtitle(tr(AppStrings.incomeFromRoom), (d) => d.summary.avrOnAllRoom),
                     seriesList: _createSeries(
                       dataSources: bloc.dataSources,
                       measureFn: (HotelDigestData dd, _) => dd.avrOnAllRoom,
                     )),
                 DigestLineChart(
                     title: tr(AppStrings.hotels),
-                    subTitle: tr(AppStrings.roomsOccupied),
+                    subTitle: _createSubtitle(tr(AppStrings.roomsOccupied), (d) => d.summary.roomsOccupied),
                     seriesList: _createSeries(
                       dataSources: bloc.dataSources,
                       measureFn: (HotelDigestData dd, _) => dd.roomsOccupied,
                     )),
                 DigestLineChart(
                     title: tr(AppStrings.hotels),
-                    subTitle: tr(AppStrings.roomsInExploitation),
+                    subTitle: _createSubtitle(tr(AppStrings.roomsInExploitation), (d) => d.summary.roomsInExploitation),
                     seriesList: _createSeries(
                       dataSources: bloc.dataSources,
                       measureFn: (HotelDigestData dd, _) => dd.roomsInExploitation,
@@ -76,6 +76,13 @@ class HotelDigestsChart extends StatelessWidget {
               ],
             ),
           );
+  }
+
+  String _createSubtitle(String base, num Function(HotelDigest) fn) {
+    return base +
+        " (" +
+        digests.fold(0.0, (previousValue, element) => (previousValue as double) + fn(element)).toInt().toString() +
+        ")";
   }
 
   List<charts.Series<HotelDigestData, DateTime>> _createSeries({
@@ -90,7 +97,7 @@ class HotelDigestsChart extends StatelessWidget {
         id: d.title,
         seriesColor: color,
         data: d.data.where((element) => element.isShadow == false).toList(),
-        domainFn: (HotelDigestData dd, _) => dd.date,
+        domainFn: (HotelDigestData dd, _) => dd.date!,
         measureFn: measureFn,
       );
     }).toList());
@@ -101,7 +108,7 @@ class HotelDigestsChart extends StatelessWidget {
         id: d.title + "'",
         seriesColor: color,
         data: d.data.where((element) => element.isShadow == true).toList(),
-        domainFn: (HotelDigestData dd, _) => dd.date,
+        domainFn: (HotelDigestData dd, _) => dd.date!,
         measureFn: measureFn,
         dashPatternFn: (HotelDigestData sales, _) => [2, 2],
         strokeWidthPxFn: (HotelDigestData sales, _) => 2.0,

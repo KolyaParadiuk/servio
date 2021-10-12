@@ -17,6 +17,7 @@ const kBaseExternalID = "BaseExternalID";
 const kTitleBase = "TitleBase";
 const kSourceType = "SourceType";
 const kData = "Data";
+const kSummary = "Summary";
 
 // HotelDigestData
 const kLoading = "Loading";

@@ -3,8 +3,10 @@ import 'package:servio/constants/api_constants.dart';
 
 part 'digest.g.dart';
 
-@JsonSerializable(explicitToJson: true)
-class Digest {
+@JsonSerializable(
+  explicitToJson: true,
+)
+class Digest<T> {
   @JsonKey(name: kBaseExternalID)
   final int baseExternalId;
 
@@ -20,20 +22,23 @@ class Digest {
     required this.sourceType,
   });
 
-  factory Digest.fromJson(Map<String, dynamic> json) => _$DigestFromJson(json);
+  factory Digest.fromJson(Map<String, dynamic> json) => _$DigestFromJson<T>(json);
 
-  Map<String, dynamic> toJson() => _$DigestToJson(this);
+  Map<String, dynamic> toJson() => _$DigestToJson<T>(this);
 }
 
 @JsonSerializable(explicitToJson: true)
-class HotelDigest extends Digest {
+class HotelDigest extends Digest<HotelDigestData> {
   @JsonKey(name: kData)
   final List<HotelDigestData> data;
+  @JsonKey(name: kSummary)
+  final HotelDigestData summary;
   HotelDigest({
     required baseExternalId,
     required title,
     required sourceType,
     required this.data,
+    required this.summary,
   }) : super(
           title: title,
           baseExternalId: baseExternalId,
@@ -50,10 +55,10 @@ class HotelDigestData {
   final loading;
 
   @JsonKey(name: kDate)
-  final DateTime date;
+  final DateTime? date;
 
   @JsonKey(name: kDayOfWeekTitle)
-  final String dayOfWeekTitle;
+  final String? dayOfWeekTitle;
 
   @JsonKey(name: kRoomsInExploitation)
   final int roomsInExploitation;
@@ -82,11 +87,11 @@ class HotelDigestData {
   @JsonKey(name: kAvrOnAllRoom)
   final double avrOnAllRoom;
   @JsonKey(name: kIsShadow)
-  final bool isShadow;
+  final bool? isShadow;
   HotelDigestData(
       {this.loading,
-      required this.date,
-      required this.dayOfWeekTitle,
+      this.date,
+      this.dayOfWeekTitle,
       required this.roomsInExploitation,
       required this.roomsInSale,
       required this.roomsOnRepairNotSale,
@@ -95,7 +100,7 @@ class HotelDigestData {
       required this.avrOnAllRoom,
       required this.coefficientRooms,
       required this.dwellingPayment,
-      required this.isShadow,
+      this.isShadow,
       this.sot});
   factory HotelDigestData.fromJson(Map<String, dynamic> json) => _$HotelDigestDataFromJson(json);
 
@@ -103,14 +108,17 @@ class HotelDigestData {
 }
 
 @JsonSerializable(explicitToJson: true)
-class RestaurantDigest extends Digest {
+class RestaurantDigest extends Digest<RestaurantDigestData> {
   @JsonKey(name: kData)
   final List<RestaurantDigestData> data;
+  @JsonKey(name: kSummary)
+  final RestaurantDigestData summary;
   RestaurantDigest({
     required baseExternalId,
     required title,
     required sourceType,
     required this.data,
+    required this.summary,
   }) : super(
           title: title,
           baseExternalId: baseExternalId,
@@ -124,7 +132,7 @@ class RestaurantDigest extends Digest {
 @JsonSerializable()
 class RestaurantDigestData {
   @JsonKey(name: kClosedDate)
-  final DateTime closedDate;
+  final DateTime? closedDate;
 
   @JsonKey(name: kGuestsCount)
   final int guestsCount;
@@ -142,19 +150,19 @@ class RestaurantDigestData {
   final double proceeds;
 
   @JsonKey(name: kIsShadow)
-  final bool isShadow;
+  final bool? isShadow;
 
   @JsonKey(name: kBaseExternalID)
   final int baseExternalID;
 
   RestaurantDigestData({
-    required this.closedDate,
+    this.closedDate,
     required this.guestsCount,
     required this.billsCount,
     required this.billTotal,
     required this.guestTotal,
     required this.proceeds,
-    required this.isShadow,
+    this.isShadow,
     required this.baseExternalID,
   });
   factory RestaurantDigestData.fromJson(Map<String, dynamic> json) => _$RestaurantDigestDataFromJson(json);

@@ -31,35 +31,35 @@ class RestaurantDigestChart extends StatelessWidget {
               children: <Widget>[
                 DigestLineChart(
                     title: tr(AppStrings.restaurants),
-                    subTitle: tr(AppStrings.income),
+                    subTitle: _createSubtitle(tr(AppStrings.income), (d) => d.summary.proceeds),
                     seriesList: _createSeries(
                       dataSources: bloc.dataSources,
                       measureFn: (RestaurantDigestData dd, _) => dd.proceeds,
                     )),
                 DigestLineChart(
                     title: tr(AppStrings.restaurants),
-                    subTitle: tr(AppStrings.averageInvoiceAmount),
+                    subTitle: _createSubtitle(tr(AppStrings.averageInvoiceAmount), (d) => d.summary.billTotal),
                     seriesList: _createSeries(
                       dataSources: bloc.dataSources,
                       measureFn: (RestaurantDigestData dd, _) => dd.billTotal,
                     )),
                 DigestLineChart(
                     title: tr(AppStrings.restaurants),
-                    subTitle: tr(AppStrings.averageAmountPerGuest),
+                    subTitle: _createSubtitle(tr(AppStrings.averageAmountPerGuest), (d) => d.summary.guestTotal),
                     seriesList: _createSeries(
                       dataSources: bloc.dataSources,
                       measureFn: (RestaurantDigestData dd, _) => dd.guestTotal,
                     )),
                 DigestLineChart(
                     title: tr(AppStrings.restaurants),
-                    subTitle: tr(AppStrings.bills),
+                    subTitle: _createSubtitle(tr(AppStrings.bills), (d) => d.summary.billsCount),
                     seriesList: _createSeries(
                       dataSources: bloc.dataSources,
                       measureFn: (RestaurantDigestData dd, _) => dd.billsCount,
                     )),
                 DigestLineChart(
                     title: tr(AppStrings.restaurants),
-                    subTitle: tr(AppStrings.guests),
+                    subTitle: _createSubtitle(tr(AppStrings.guests), (d) => d.summary.guestsCount),
                     seriesList: _createSeries(
                       dataSources: bloc.dataSources,
                       measureFn: (RestaurantDigestData dd, _) => dd.guestsCount,
@@ -67,6 +67,13 @@ class RestaurantDigestChart extends StatelessWidget {
               ],
             ),
           );
+  }
+
+  String _createSubtitle(String base, num Function(RestaurantDigest) fn) {
+    return base +
+        " (" +
+        digests.fold(0.0, (previousValue, element) => (previousValue as double) + fn(element)).toInt().toString() +
+        ")";
   }
 
   List<charts.Series<RestaurantDigestData, DateTime>> _createSeries({
@@ -81,7 +88,7 @@ class RestaurantDigestChart extends StatelessWidget {
         id: d.title,
         seriesColor: color,
         data: d.data.where((element) => element.isShadow == false).toList(),
-        domainFn: (RestaurantDigestData dd, _) => dd.closedDate,
+        domainFn: (RestaurantDigestData dd, _) => dd.closedDate!,
         measureFn: measureFn,
       );
     }).toList());
@@ -92,7 +99,7 @@ class RestaurantDigestChart extends StatelessWidget {
         id: d.title + "'",
         seriesColor: color,
         data: d.data.where((element) => element.isShadow == true).toList(),
-        domainFn: (RestaurantDigestData dd, _) => dd.closedDate,
+        domainFn: (RestaurantDigestData dd, _) => dd.closedDate!,
         measureFn: measureFn,
         dashPatternFn: (RestaurantDigestData sales, _) => [2, 2],
         strokeWidthPxFn: (RestaurantDigestData sales, _) => 2.0,
