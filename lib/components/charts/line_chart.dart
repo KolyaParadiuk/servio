@@ -59,7 +59,7 @@ class _DigestLineChartState extends State<DigestLineChart> {
               changedListener: (charts.SelectionModel model) {
                 if (model.hasDatumSelection) {
                   DigestLineChart.selectedValue =
-                      model.selectedSeries[0].measureFn(model.selectedDatum[0].index).toString();
+                      model.selectedSeries[0].measureFn(model.selectedDatum[0].index)?.toStringAsFixed(2);
                   DigestLineChart.selectedDate =
                       formatForInputField(model.selectedSeries[0].domainFn(model.selectedDatum[0].index));
                 }

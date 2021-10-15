@@ -13,8 +13,9 @@ class AppUpdate {
 
   bool isNeedUpdate = false;
 
-  initialise() async {
+  Future<bool> initialise() async {
     isNeedUpdate = await _isNeedUpdateFromApi();
+    return isNeedUpdate;
   }
 
   ///Compares values of the recommended version from Api with the current ones.

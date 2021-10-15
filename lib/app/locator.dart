@@ -7,7 +7,7 @@ GetIt locator = GetIt.instance;
 
 Future<void> setupLocator() async {
   setupApiService();
-  setupAppUpdateLocator();
+  // setupAppUpdateLocator();
 }
 
 void setupApiService() {

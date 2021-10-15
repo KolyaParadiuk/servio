@@ -29,7 +29,7 @@ void main() async {
 
   await initApi();
 
-  await locator<AppUpdate>().initialise();
+  // await locator<AppUpdate>().initialise();
 
   runApp(RestartWidget(child: App()));
 }
@@ -75,19 +75,19 @@ class _ServioState extends State<_Servio> {
   bool isAppActive = false;
   String initialRoute = RoutePaths.welcome;
   Preferences prefs = locator<Preferences>();
-  bool isNeedUpdate = locator<AppUpdate>().isNeedUpdate;
+  // bool isNeedUpdate = locator<AppUpdate>().isNeedUpdate;
 
   @override
   void initState() {
     super.initState();
-    if (isNeedUpdate) {
-      initialRoute = RoutePaths.appUpdate;
-    } else {
-      isAppActive = prefs.isAppActive();
-      if (isAppActive) {
-        initialRoute = RoutePaths.digests;
-      }
+    // if (isNeedUpdate) {
+    //   initialRoute = RoutePaths.appUpdate;
+    // } else {
+    isAppActive = prefs.isAppActive();
+    if (isAppActive) {
+      initialRoute = RoutePaths.digests;
     }
+    // }
   }
 
   @override

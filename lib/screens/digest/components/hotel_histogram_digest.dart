@@ -47,7 +47,8 @@ class HotelHistogramDigestChart extends StatelessWidget {
           if (l is num) return l;
           return 0;
         },
-        labelAccessorFn: (HotelDigest d, _) => '${d.data.firstWhere((dd) => dd.isShadow == false).loading}',
+        labelAccessorFn: (HotelDigest d, _) =>
+            '${d.data.firstWhere((dd) => dd.isShadow == false).loading.toStringAsFixed(2)}',
         data: digests,
       ),
       new charts.Series<HotelDigest, String>(
@@ -55,7 +56,8 @@ class HotelHistogramDigestChart extends StatelessWidget {
         id: tr(AppStrings.averageRate),
         domainFn: (HotelDigest d, _) => d.title,
         measureFn: (HotelDigest d, _) => d.data.firstWhere((dd) => dd.isShadow == false).sot,
-        labelAccessorFn: (HotelDigest d, _) => '${d.data.firstWhere((dd) => dd.isShadow == false).sot}',
+        labelAccessorFn: (HotelDigest d, _) =>
+            '${d.data.firstWhere((dd) => dd.isShadow == false).sot?.toStringAsFixed(2)}',
         data: digests,
       ),
       new charts.Series<HotelDigest, String>(
