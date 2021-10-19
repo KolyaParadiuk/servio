@@ -3,20 +3,20 @@ import 'package:charts_flutter/flutter.dart' as charts;
 
 class GroupedBarChart extends StatelessWidget {
   final List<charts.Series<dynamic, String>> seriesList;
-  final bool? animate;
   final String title;
+  final String subTitle;
 
-  GroupedBarChart(
-    this.seriesList, {
-    this.animate,
+  GroupedBarChart({
+    required this.seriesList,
     required this.title,
+    required this.subTitle,
   });
 
   @override
   Widget build(BuildContext context) {
     return new charts.BarChart(
       seriesList,
-      animate: animate,
+      animate: false,
       barGroupingType: charts.BarGroupingType.grouped,
       barRendererDecorator: new charts.BarLabelDecorator<String>(
         labelPadding: 2,
@@ -24,12 +24,8 @@ class GroupedBarChart extends StatelessWidget {
       ),
       domainAxis: new charts.OrdinalAxisSpec(),
       behaviors: [
-        new charts.SeriesLegend(
-          position: charts.BehaviorPosition.bottom,
-          desiredMaxColumns: 2,
-          defaultHiddenSeries: [],
-        ),
         new charts.ChartTitle(title,
+            subTitle: subTitle,
             behaviorPosition: charts.BehaviorPosition.top,
             titleOutsideJustification: charts.OutsideJustification.start,
             innerPadding: 18,
