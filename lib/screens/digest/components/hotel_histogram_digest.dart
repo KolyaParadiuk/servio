@@ -5,6 +5,7 @@ import 'package:servio/components/loading.dart';
 import 'package:servio/constants/app_strings.dart';
 import 'package:servio/models/digest.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:servio/utils/num.dart';
 
 class HotelHistogramDigestChart extends StatelessWidget {
   final List<HotelDigest> digests;
@@ -35,7 +36,7 @@ class HotelHistogramDigestChart extends StatelessWidget {
         domainFn: (HotelDigest d, _) => d.title,
         measureFn: (HotelDigest d, _) => d.data.firstWhere((dd) => dd.isShadow == false).dwellingPayment,
         labelAccessorFn: (HotelDigest d, _) =>
-            '${d.data.firstWhere((dd) => dd.isShadow == false).dwellingPayment.toInt()}',
+            '${d.data.firstWhere((dd) => dd.isShadow == false).dwellingPayment.toStringFixedWithThousandSeparators()}',
         data: digests,
       ),
       new charts.Series<HotelDigest, String>(
@@ -47,8 +48,12 @@ class HotelHistogramDigestChart extends StatelessWidget {
           if (l is num) return l;
           return 0;
         },
-        labelAccessorFn: (HotelDigest d, _) =>
-            '${d.data.firstWhere((dd) => dd.isShadow == false).loading.toStringAsFixed(2)}',
+        labelAccessorFn: (HotelDigest d, _) {
+          final l = d.data.firstWhere((dd) => dd.isShadow == false).loading;
+          if (l is num)
+            return '${(d.data.firstWhere((dd) => dd.isShadow == false).loading as double).toStringWithThousandSeparators()}';
+          return '0';
+        },
         data: digests,
       ),
       new charts.Series<HotelDigest, String>(
@@ -56,8 +61,9 @@ class HotelHistogramDigestChart extends StatelessWidget {
         id: tr(AppStrings.averageRate),
         domainFn: (HotelDigest d, _) => d.title,
         measureFn: (HotelDigest d, _) => d.data.firstWhere((dd) => dd.isShadow == false).sot,
-        labelAccessorFn: (HotelDigest d, _) =>
-            '${d.data.firstWhere((dd) => dd.isShadow == false).sot?.toStringAsFixed(2)}',
+        labelAccessorFn: (HotelDigest d, _) {
+          return '${d.data.firstWhere((dd) => dd.isShadow == false).sot?.toStringWithThousandSeparators()}';
+        },
         data: digests,
       ),
       new charts.Series<HotelDigest, String>(
@@ -66,7 +72,7 @@ class HotelHistogramDigestChart extends StatelessWidget {
         domainFn: (HotelDigest d, _) => d.title,
         measureFn: (HotelDigest d, _) => d.data.firstWhere((dd) => dd.isShadow == false).avrOnAllRoom,
         labelAccessorFn: (HotelDigest d, _) =>
-            '${d.data.firstWhere((dd) => dd.isShadow == false).avrOnAllRoom.toInt()}',
+            '${d.data.firstWhere((dd) => dd.isShadow == false).avrOnAllRoom.toStringFixedWithThousandSeparators()}',
         data: digests,
       ),
       new charts.Series<HotelDigest, String>(
@@ -74,7 +80,8 @@ class HotelHistogramDigestChart extends StatelessWidget {
         id: tr(AppStrings.roomsOccupied),
         domainFn: (HotelDigest d, _) => d.title,
         measureFn: (HotelDigest d, _) => d.data.firstWhere((dd) => dd.isShadow == false).roomsOccupied,
-        labelAccessorFn: (HotelDigest d, _) => '${d.data.firstWhere((dd) => dd.isShadow == false).roomsOccupied}',
+        labelAccessorFn: (HotelDigest d, _) =>
+            '${d.data.firstWhere((dd) => dd.isShadow == false).roomsOccupied.toStringFixedWithThousandSeparators()}',
         data: digests,
       ),
       new charts.Series<HotelDigest, String>(
@@ -82,7 +89,8 @@ class HotelHistogramDigestChart extends StatelessWidget {
         id: tr(AppStrings.roomsInExploitation),
         domainFn: (HotelDigest d, _) => d.title,
         measureFn: (HotelDigest d, _) => d.data.firstWhere((dd) => dd.isShadow == false).roomsInExploitation,
-        labelAccessorFn: (HotelDigest d, _) => '${d.data.firstWhere((dd) => dd.isShadow == false).roomsInExploitation}',
+        labelAccessorFn: (HotelDigest d, _) =>
+            '${d.data.firstWhere((dd) => dd.isShadow == false).roomsInExploitation.toStringFixedWithThousandSeparators()}',
         data: digests,
       ),
     ];

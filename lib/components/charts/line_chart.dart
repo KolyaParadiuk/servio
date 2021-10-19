@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:servio/components/charts/custom_circle_symbol_renderer.dart';
 import 'package:servio/utils/date.dart';
+import 'package:servio/utils/num.dart';
 
 class DigestLineChart extends StatefulWidget {
   final List<charts.Series<dynamic, DateTime>> seriesList;
@@ -59,7 +60,7 @@ class _DigestLineChartState extends State<DigestLineChart> {
               changedListener: (charts.SelectionModel model) {
                 if (model.hasDatumSelection) {
                   DigestLineChart.selectedValue =
-                      model.selectedSeries[0].measureFn(model.selectedDatum[0].index)?.toStringAsFixed(2);
+                      model.selectedSeries[0].measureFn(model.selectedDatum[0].index)?.toStringWithThousandSeparators();
 
                   if (model.selectedDatum[0].datum.isShadow == true) {
                     DigestLineChart.selectedDate = formatForShadowDate(

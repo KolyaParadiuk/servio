@@ -5,6 +5,7 @@ import 'package:servio/components/loading.dart';
 import 'package:servio/constants/app_strings.dart';
 import 'package:servio/models/digest.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:servio/utils/num.dart';
 
 class RestaurantHistogramDigestChart extends StatelessWidget {
   final List<RestaurantDigest> digests;
@@ -31,7 +32,7 @@ class RestaurantHistogramDigestChart extends StatelessWidget {
         measureFn: (RestaurantDigest d, _) => d.data.firstWhere((dd) => dd.isShadow == false).proceeds,
         data: digests,
         labelAccessorFn: (RestaurantDigest d, _) =>
-            '${d.data.firstWhere((dd) => dd.isShadow == false).proceeds.toInt()}',
+            '${d.data.firstWhere((dd) => dd.isShadow == false).proceeds.toStringFixedWithThousandSeparators()}',
       ),
       new charts.Series<RestaurantDigest, String>(
         seriesColor: charts.Color.fromHex(code: "#4A88DA"),
@@ -39,7 +40,7 @@ class RestaurantHistogramDigestChart extends StatelessWidget {
         domainFn: (RestaurantDigest d, _) => d.title,
         measureFn: (RestaurantDigest d, _) => d.data.firstWhere((dd) => dd.isShadow == false).billTotal,
         labelAccessorFn: (RestaurantDigest d, _) =>
-            '${d.data.firstWhere((dd) => dd.isShadow == false).billTotal.toInt()}',
+            '${d.data.firstWhere((dd) => dd.isShadow == false).billTotal.toStringFixedWithThousandSeparators()}',
         data: digests,
       ),
       new charts.Series<RestaurantDigest, String>(
@@ -48,7 +49,7 @@ class RestaurantHistogramDigestChart extends StatelessWidget {
         domainFn: (RestaurantDigest d, _) => d.title,
         measureFn: (RestaurantDigest d, _) => d.data.firstWhere((dd) => dd.isShadow == false).guestTotal,
         labelAccessorFn: (RestaurantDigest d, _) =>
-            '${d.data.firstWhere((dd) => dd.isShadow == false).guestTotal.toInt()}',
+            '${d.data.firstWhere((dd) => dd.isShadow == false).guestTotal.toStringFixedWithThousandSeparators()}',
         data: digests,
       ),
       new charts.Series<RestaurantDigest, String>(
@@ -57,7 +58,7 @@ class RestaurantHistogramDigestChart extends StatelessWidget {
         domainFn: (RestaurantDigest d, _) => d.title,
         measureFn: (RestaurantDigest d, _) => d.data.firstWhere((dd) => dd.isShadow == false).billsCount,
         labelAccessorFn: (RestaurantDigest d, _) =>
-            '${d.data.firstWhere((dd) => dd.isShadow == false).billsCount.toInt()}',
+            '${d.data.firstWhere((dd) => dd.isShadow == false).billsCount.toStringFixedWithThousandSeparators()}',
         data: digests,
       ),
       new charts.Series<RestaurantDigest, String>(
@@ -66,7 +67,7 @@ class RestaurantHistogramDigestChart extends StatelessWidget {
         domainFn: (RestaurantDigest d, _) => d.title,
         measureFn: (RestaurantDigest d, _) => d.data.firstWhere((dd) => dd.isShadow == false).guestsCount,
         labelAccessorFn: (RestaurantDigest d, _) =>
-            '${d.data.firstWhere((dd) => dd.isShadow == false).guestsCount.toInt()}',
+            '${d.data.firstWhere((dd) => dd.isShadow == false).guestsCount.toStringFixedWithThousandSeparators()}',
         data: digests,
       ),
     ];
