@@ -31,10 +31,10 @@ class RestaurantHistogramDigestChart extends StatelessWidget {
                   subTitle: tr(AppStrings.income),
                   seriesList: _createSeries(
                     id: tr(AppStrings.income),
-                    labelAccessorFn: (RestaurantDigest d, _) =>
-                        '${d.data.firstWhere((dd) => dd.isShadow == false).proceeds.toStringFixedWithThousandSeparators()}',
+                    // labelAccessorFn: (RestaurantDigest d, _) =>
+                    //     '${d.data.firstWhere((dd) => dd.isShadow == false).proceeds.toStringFixedWithThousandSeparators()}',
                     dataSources: bloc.dataSources,
-                    measureFn: (RestaurantDigest d, _) => d.data.firstWhere((dd) => dd.isShadow == false).proceeds,
+                    measureFn: (RestaurantDigestData d) => d.proceeds,
                   )),
               GroupedBarChart(
                   title: tr(AppStrings.restaurants),
@@ -42,9 +42,9 @@ class RestaurantHistogramDigestChart extends StatelessWidget {
                   seriesList: _createSeries(
                     id: tr(AppStrings.averageInvoiceAmount),
                     dataSources: bloc.dataSources,
-                    labelAccessorFn: (RestaurantDigest d, _) =>
-                        '${d.data.firstWhere((dd) => dd.isShadow == false).billTotal.toStringFixedWithThousandSeparators()}',
-                    measureFn: (RestaurantDigest d, _) => d.data.firstWhere((dd) => dd.isShadow == false).billTotal,
+                    // labelAccessorFn: (RestaurantDigest d, _) =>
+                    //     '${d.data.firstWhere((dd) => dd.isShadow == false).billTotal.toStringFixedWithThousandSeparators()}',
+                    measureFn: (RestaurantDigestData d) => d.billTotal,
                   )),
               GroupedBarChart(
                   title: tr(AppStrings.restaurants),
@@ -52,9 +52,9 @@ class RestaurantHistogramDigestChart extends StatelessWidget {
                   seriesList: _createSeries(
                     id: tr(AppStrings.averageAmountPerGuest),
                     dataSources: bloc.dataSources,
-                    labelAccessorFn: (RestaurantDigest d, _) =>
-                        '${d.data.firstWhere((dd) => dd.isShadow == false).guestTotal.toStringFixedWithThousandSeparators()}',
-                    measureFn: (RestaurantDigest d, _) => d.data.firstWhere((dd) => dd.isShadow == false).guestTotal,
+                    // labelAccessorFn: (RestaurantDigest d, _) =>
+                    //     '${d.data.firstWhere((dd) => dd.isShadow == false).guestTotal.toStringFixedWithThousandSeparators()}',
+                    measureFn: (RestaurantDigestData d) => d.guestTotal,
                   )),
               GroupedBarChart(
                   title: tr(AppStrings.restaurants),
@@ -62,9 +62,9 @@ class RestaurantHistogramDigestChart extends StatelessWidget {
                   seriesList: _createSeries(
                     id: tr(AppStrings.bills),
                     dataSources: bloc.dataSources,
-                    labelAccessorFn: (RestaurantDigest d, _) =>
-                        '${d.data.firstWhere((dd) => dd.isShadow == false).billsCount.toStringFixedWithThousandSeparators()}',
-                    measureFn: (RestaurantDigest d, _) => d.data.firstWhere((dd) => dd.isShadow == false).billsCount,
+                    // labelAccessorFn: (RestaurantDigest d, _) =>
+                    //     '${d.data.firstWhere((dd) => dd.isShadow == false).billsCount.toStringFixedWithThousandSeparators()}',
+                    measureFn: (RestaurantDigestData d) => d.billsCount,
                   )),
               GroupedBarChart(
                   title: tr(AppStrings.restaurants),
@@ -72,29 +72,51 @@ class RestaurantHistogramDigestChart extends StatelessWidget {
                   seriesList: _createSeries(
                     id: tr(AppStrings.guests),
                     dataSources: bloc.dataSources,
-                    labelAccessorFn: (RestaurantDigest d, _) =>
-                        '${d.data.firstWhere((dd) => dd.isShadow == false).guestsCount.toStringFixedWithThousandSeparators()}',
-                    measureFn: (RestaurantDigest d, _) => d.data.firstWhere((dd) => dd.isShadow == false).guestsCount,
+                    // labelAccessorFn: (RestaurantDigest d, _) =>
+                    //     '${d.data.firstWhere((dd) => dd.isShadow == false).guestsCount.toStringFixedWithThousandSeparators()}',
+                    measureFn: (RestaurantDigestData d) => d.guestsCount,
                   )),
             ]),
           ));
   }
 
-  List<charts.Series<RestaurantDigest, String>> _createSeries(
-      {required num? Function(RestaurantDigest, int?) measureFn,
-      required List<DataSource> dataSources,
-      required String id,
-      String Function(RestaurantDigest, int?)? labelAccessorFn}) {
+  List<charts.Series<RestaurantDigest, String>> _createSeries({
+    required num? Function(RestaurantDigestData) measureFn,
+    required List<DataSource> dataSources,
+    required String id,
+  }) {
     return [
+      new charts.Series<RestaurantDigest, String>(
+        colorFn: (RestaurantDigest d, _) {
+          final Color c = dataSources.firstWhere((ds) => ds.id == d.baseExternalId).color;
+          return charts.Color(r: c.red, g: c.green, b: c.blue).lighter.lighter.lighter;
+        },
+        seriesCategory: 'shadow',
+        id: id,
+        domainFn: (RestaurantDigest d, _) => d.title,
+        fillPatternFn: (RestaurantDigest sales, _) => charts.FillPatternType.forwardHatch,
+        measureFn: (RestaurantDigest d, _) => measureFn(d.data.firstWhere((dd) => dd.isShadow == true)),
+        labelAccessorFn: (RestaurantDigest d, _) =>
+            measureFn(d.data.firstWhere((dd) => dd.isShadow == true))?.toStringFixedWithThousandSeparators() ?? "",
+        data: digests,
+        insideLabelStyleAccessorFn: (RestaurantDigest d, _) {
+          return new charts.TextStyleSpec(color: charts.MaterialPalette.black);
+        },
+      ),
       new charts.Series<RestaurantDigest, String>(
         colorFn: (RestaurantDigest d, _) {
           final Color c = dataSources.firstWhere((ds) => ds.id == d.baseExternalId).color;
           return charts.Color(r: c.red, g: c.green, b: c.blue);
         },
+        insideLabelStyleAccessorFn: (RestaurantDigest d, _) {
+          return new charts.TextStyleSpec(color: charts.MaterialPalette.black);
+        },
         id: id,
+        seriesCategory: 'real',
         domainFn: (RestaurantDigest d, _) => d.title,
-        measureFn: measureFn,
-        labelAccessorFn: labelAccessorFn,
+        measureFn: (RestaurantDigest d, _) => measureFn(d.data.firstWhere((dd) => dd.isShadow == false)), // measureFn,
+        labelAccessorFn: (RestaurantDigest d, _) =>
+            measureFn(d.data.firstWhere((dd) => dd.isShadow == false))?.toStringFixedWithThousandSeparators() ?? "",
         data: digests,
       ),
     ];

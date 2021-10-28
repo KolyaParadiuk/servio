@@ -33,9 +33,9 @@ class HotelHistogramDigestChart extends StatelessWidget {
                   seriesList: _createSeries(
                     id: tr(AppStrings.income),
                     dataSources: bloc.dataSources,
-                    measureFn: (HotelDigest d, _) => d.data.firstWhere((dd) => dd.isShadow == false).dwellingPayment,
-                    labelAccessorFn: (HotelDigest d, _) =>
-                        '${d.data.firstWhere((dd) => dd.isShadow == false).dwellingPayment.toStringFixedWithThousandSeparators()}',
+                    measureFn: (HotelDigestData d) => d.dwellingPayment,
+                    // labelAccessorFn: (HotelDigest d, _) =>
+                    //     '${d.data.firstWhere((dd) => dd.isShadow == false).dwellingPayment.toStringFixedWithThousandSeparators()}',
                   )),
               GroupedBarChart(
                   title: tr(AppStrings.hotels),
@@ -43,17 +43,17 @@ class HotelHistogramDigestChart extends StatelessWidget {
                   seriesList: _createSeries(
                     id: tr(AppStrings.loading),
                     dataSources: bloc.dataSources,
-                    measureFn: (HotelDigest d, _) {
-                      final l = d.data.firstWhere((dd) => dd.isShadow == false).loading;
+                    measureFn: (HotelDigestData d) {
+                      final l = d.loading;
                       if (l is num) return l;
                       return 0;
                     },
-                    labelAccessorFn: (HotelDigest d, _) {
-                      final l = d.data.firstWhere((dd) => dd.isShadow == false).loading;
-                      if (l is num)
-                        return '${(d.data.firstWhere((dd) => dd.isShadow == false).loading as double).toStringWithThousandSeparators()}';
-                      return '0';
-                    },
+                    // labelAccessorFn: (HotelDigest d, _) {
+                    //   final l = d.data.firstWhere((dd) => dd.isShadow == false).loading;
+                    //   if (l is num)
+                    //     return '${(d.data.firstWhere((dd) => dd.isShadow == false).loading as double).toStringWithThousandSeparators()}';
+                    //   return '0';
+                    // },
                   )),
               GroupedBarChart(
                   title: tr(AppStrings.hotels),
@@ -61,10 +61,10 @@ class HotelHistogramDigestChart extends StatelessWidget {
                   seriesList: _createSeries(
                     id: tr(AppStrings.averageRate),
                     dataSources: bloc.dataSources,
-                    measureFn: (HotelDigest d, _) => d.data.firstWhere((dd) => dd.isShadow == false).sot,
-                    labelAccessorFn: (HotelDigest d, _) {
-                      return '${d.data.firstWhere((dd) => dd.isShadow == false).sot?.toStringWithThousandSeparators()}';
-                    },
+                    measureFn: (HotelDigestData d) => d.sot,
+                    // labelAccessorFn: (HotelDigest d, _) {
+                    //   return '${d.data.firstWhere((dd) => dd.isShadow == false).sot?.toStringWithThousandSeparators()}';
+                    // },
                   )),
               GroupedBarChart(
                   title: tr(AppStrings.hotels),
@@ -72,9 +72,9 @@ class HotelHistogramDigestChart extends StatelessWidget {
                   seriesList: _createSeries(
                     id: tr(AppStrings.incomeFromRoom),
                     dataSources: bloc.dataSources,
-                    measureFn: (HotelDigest d, _) => d.data.firstWhere((dd) => dd.isShadow == false).avrOnAllRoom,
-                    labelAccessorFn: (HotelDigest d, _) =>
-                        '${d.data.firstWhere((dd) => dd.isShadow == false).avrOnAllRoom.toStringFixedWithThousandSeparators()}',
+                    measureFn: (HotelDigestData d) => d.avrOnAllRoom,
+                    // labelAccessorFn: (HotelDigest d, _) =>
+                    // '${d.data.firstWhere((dd) => dd.isShadow == false).avrOnAllRoom.toStringFixedWithThousandSeparators()}',
                   )),
               GroupedBarChart(
                   title: tr(AppStrings.hotels),
@@ -82,9 +82,9 @@ class HotelHistogramDigestChart extends StatelessWidget {
                   seriesList: _createSeries(
                     id: tr(AppStrings.roomsOccupied),
                     dataSources: bloc.dataSources,
-                    measureFn: (HotelDigest d, _) => d.data.firstWhere((dd) => dd.isShadow == false).roomsOccupied,
-                    labelAccessorFn: (HotelDigest d, _) =>
-                        '${d.data.firstWhere((dd) => dd.isShadow == false).roomsOccupied.toStringFixedWithThousandSeparators()}',
+                    measureFn: (HotelDigestData d) => d.roomsOccupied,
+                    // labelAccessorFn: (HotelDigest d, _) =>
+                    //     '${d.data.firstWhere((dd) => dd.isShadow == false).roomsOccupied.toStringFixedWithThousandSeparators()}',
                   )),
               GroupedBarChart(
                   title: tr(AppStrings.hotels),
@@ -92,21 +92,37 @@ class HotelHistogramDigestChart extends StatelessWidget {
                   seriesList: _createSeries(
                     id: tr(AppStrings.roomsInExploitation),
                     dataSources: bloc.dataSources,
-                    measureFn: (HotelDigest d, _) =>
-                        d.data.firstWhere((dd) => dd.isShadow == false).roomsInExploitation,
-                    labelAccessorFn: (HotelDigest d, _) =>
-                        '${d.data.firstWhere((dd) => dd.isShadow == false).roomsInExploitation.toStringFixedWithThousandSeparators()}',
+                    measureFn: (HotelDigestData d) => d.roomsInExploitation,
+                    // labelAccessorFn: (HotelDigest d, _) =>
+                    //     '${d.data.firstWhere((dd) => dd.isShadow == false).roomsInExploitation.toStringFixedWithThousandSeparators()}',
                   )),
             ],
           )));
   }
 
-  List<charts.Series<HotelDigest, String>> _createSeries(
-      {required num? Function(HotelDigest, int?) measureFn,
-      required List<DataSource> dataSources,
-      required String id,
-      String Function(HotelDigest, int?)? labelAccessorFn}) {
+  List<charts.Series<HotelDigest, String>> _createSeries({
+    required num? Function(HotelDigestData) measureFn,
+    required List<DataSource> dataSources,
+    required String id,
+    // String Function(HotelDigest, int?)? labelAccessorFn,
+  }) {
     return [
+      new charts.Series<HotelDigest, String>(
+        colorFn: (HotelDigest d, _) {
+          final Color c = dataSources.firstWhere((ds) => ds.id == d.baseExternalId).color;
+          return charts.Color(r: c.red, g: c.green, b: c.blue).lighter.lighter.lighter;
+        },
+        id: id,
+        fillPatternFn: (HotelDigest sales, _) => charts.FillPatternType.forwardHatch,
+        domainFn: (HotelDigest d, _) => d.title,
+        measureFn: (HotelDigest d, _) => measureFn(d.data.firstWhere((dd) => dd.isShadow == true)),
+        labelAccessorFn: (HotelDigest d, _) =>
+            measureFn(d.data.firstWhere((dd) => dd.isShadow == true))?.toStringFixedWithThousandSeparators() ?? "",
+        data: digests,
+        insideLabelStyleAccessorFn: (HotelDigest d, _) {
+          return new charts.TextStyleSpec(color: charts.MaterialPalette.black);
+        },
+      ),
       new charts.Series<HotelDigest, String>(
         colorFn: (HotelDigest d, _) {
           final Color c = dataSources.firstWhere((ds) => ds.id == d.baseExternalId).color;
@@ -114,9 +130,13 @@ class HotelHistogramDigestChart extends StatelessWidget {
         },
         id: id,
         domainFn: (HotelDigest d, _) => d.title,
-        measureFn: measureFn,
-        labelAccessorFn: labelAccessorFn,
+        measureFn: (HotelDigest d, _) => measureFn(d.data.firstWhere((dd) => dd.isShadow == false)),
+        labelAccessorFn: (HotelDigest d, _) =>
+            measureFn(d.data.firstWhere((dd) => dd.isShadow == false))?.toStringFixedWithThousandSeparators() ?? "",
         data: digests,
+        insideLabelStyleAccessorFn: (HotelDigest d, _) {
+          return new charts.TextStyleSpec(color: charts.MaterialPalette.black);
+        },
       ),
     ];
   }
