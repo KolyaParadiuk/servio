@@ -1,13 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
-import 'package:get/get.dart';
-import 'package:servio/app/localization/translations.dart';
 import 'package:servio/app/locator.dart';
 import 'package:servio/caches/preferences.dart';
 import 'package:servio/components/drawer.dart';
-import 'package:servio/constants/app_strings.dart';
 import 'package:servio/models/report.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
