@@ -22,6 +22,11 @@ class DigestsBloc extends Bloc<DigestsEvent, DigestsState> {
   bool showLastDay = true;
   bool showLastWeek = false;
   bool showLastMonth = false;
+
+  bool isOneDay() {
+    return from.day == to.day && from.month == to.month && from.year == to.year;
+  }
+
   @override
   Stream<DigestsState> mapEventToState(
     DigestsEvent event,
@@ -49,17 +54,27 @@ class DigestsBloc extends Bloc<DigestsEvent, DigestsState> {
         showLastMonth: showLastMonth,
       );
     } else if (event is ChangeTimeFrom) {
-      if (event.date.isBefore(to)) {
-        from = event.date;
+      final currentFrom = event.date.copyWith(
+        minute: 0,
+        hour: 0,
+      );
+      if (!currentFrom.isAfter(to)) {
+        from = currentFrom;
         switchOffSpecificDigest();
         add(LoadDigest());
-      }
+      } else
+        setOneDay(currentFrom);
     } else if (event is ChangeTimeTo) {
-      if (event.date.isAfter(from)) {
-        to = event.date;
+      final currentTo = event.date.copyWith(
+        minute: 59,
+        hour: 23,
+      );
+      if (!currentTo.isBefore(from)) {
+        to = currentTo;
         switchOffSpecificDigest();
         add(LoadDigest());
-      }
+      } else
+        setOneDay(currentTo);
     } else if (event is SwitchTodayDigestCheckbox) {
       from = DateTime.now().copyWith(
         hour: 0,
@@ -83,14 +98,22 @@ class DigestsBloc extends Bloc<DigestsEvent, DigestsState> {
       add(LoadDigest());
     } else if (event is SwitchWeekDigestCheckbox) {
       to = DateTime.now();
-      from = DateTime.fromMillisecondsSinceEpoch(DateTime.now().millisecondsSinceEpoch - 7 * kMilisecondsInDay);
+      from =
+          DateTime.fromMillisecondsSinceEpoch(DateTime.now().millisecondsSinceEpoch - 7 * kMilisecondsInDay).copyWith(
+        minute: 0,
+        hour: 0,
+      );
       showLastDay = false;
       showLastWeek = true;
       showLastMonth = false;
       add(LoadDigest());
     } else if (event is SwitchMonthDigestCheckbox) {
       to = DateTime.now();
-      from = DateTime.now().copyWith(month: to.month - 1);
+      from = DateTime.now().copyWith(month: to.month - 1).copyWith(
+            minute: 0,
+            hour: 0,
+          );
+
       showLastDay = false;
       showLastWeek = false;
       showLastMonth = true;
@@ -102,5 +125,18 @@ class DigestsBloc extends Bloc<DigestsEvent, DigestsState> {
     showLastDay = false;
     showLastWeek = false;
     showLastMonth = false;
+  }
+
+  setOneDay(DateTime date) {
+    to = date.copyWith(
+      minute: 59,
+      hour: 23,
+    );
+    from = date.copyWith(
+      minute: 0,
+      hour: 0,
+    );
+    switchOffSpecificDigest();
+    add(LoadDigest());
   }
 }

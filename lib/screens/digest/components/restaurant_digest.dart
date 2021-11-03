@@ -8,6 +8,7 @@ import 'package:servio/models/data_source.dart';
 import 'package:servio/models/digest.dart';
 import 'package:servio/screens/digest/components/charts_page_view.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:servio/utils/num.dart';
 
 class RestaurantDigestChart extends StatelessWidget {
   final List<RestaurantDigest> digests;
@@ -72,7 +73,9 @@ class RestaurantDigestChart extends StatelessWidget {
   String _createSubtitle(String base, num Function(RestaurantDigest) fn) {
     return base +
         " (" +
-        digests.fold(0.0, (previousValue, element) => (previousValue as double) + fn(element)).toInt().toString() +
+        digests
+            .fold(0.0, (previousValue, element) => (previousValue as double) + fn(element))
+            .toStringFixedWithThousandSeparators() +
         ")";
   }
 

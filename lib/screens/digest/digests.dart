@@ -113,7 +113,7 @@ class _DigestsScreenState extends State<DigestsScreen> with WidgetsBindingObserv
                     ),
                     Expanded(
                       child: Column(
-                        children: state.showLastDay
+                        children: BlocProvider.of<DigestsBloc>(context).isOneDay()
                             ? [
                                 RestaurantHistogramDigestChart(
                                   loading: (state is DataLoading),

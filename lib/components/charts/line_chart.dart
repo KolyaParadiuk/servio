@@ -47,11 +47,11 @@ class _DigestLineChartState extends State<DigestLineChart> {
               )),
           new charts.SeriesLegend(
             position: charts.BehaviorPosition.bottom,
-            desiredMaxColumns: 3,
+            desiredMaxColumns: 2,
             defaultHiddenSeries: [],
           ),
           charts.LinePointHighlighter(
-            symbolRenderer: CustomCircleSymbolRenderer(),
+            symbolRenderer: CustomInfoRenderer(),
           )
         ],
         selectionModels: [

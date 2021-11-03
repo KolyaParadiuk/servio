@@ -8,8 +8,8 @@ import 'package:servio/components/charts/line_chart.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:servio/constants/app_colors.dart';
 
-class CustomCircleSymbolRenderer extends CircleSymbolRenderer {
-  CustomCircleSymbolRenderer();
+class CustomInfoRenderer extends CircleSymbolRenderer {
+  CustomInfoRenderer();
 
   @override
   void paint(
@@ -23,14 +23,14 @@ class CustomCircleSymbolRenderer extends CircleSymbolRenderer {
   }) {
     super.paint(canvas, bounds,
         dashPattern: dashPattern, fillColor: fillColor, strokeColor: strokeColor, strokeWidthPx: strokeWidthPx);
-    canvas.drawRect(Rectangle(200.w, 20.w, 100.w, 35.w), fill: Color(r: kMain.red, g: kMain.green, b: kMain.blue));
+    canvas.drawRect(Rectangle(200.w, 10.w, 100.w, 35.w), fill: Color(r: kMain.red, g: kMain.green, b: kMain.blue));
     var textStyle = style.TextStyle();
     textStyle.color = Color.white;
     textStyle.fontSize = 15;
     canvas.drawText(
       text.TextElement("${DigestLineChart.selectedDate}\n${DigestLineChart.selectedValue}", style: textStyle),
       200.w.round() + 5,
-      20.w.round() + 5,
+      10.w.round() + 5,
     );
   }
 }
