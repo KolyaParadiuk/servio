@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:servio/constants/api_constants.dart';
+import 'package:servio/utils/color.dart';
 
 part 'data_source.g.dart';
 
@@ -15,6 +16,9 @@ class DataSource {
 
   final bool? isActive;
 
+  @JsonKey(name: kColor)
+  final String serverColor;
+
   final Color color;
 
   @JsonKey(name: kType)
@@ -23,8 +27,9 @@ class DataSource {
     required this.id,
     required this.name,
     required this.type,
+    required this.serverColor,
     this.isActive = true,
-  }) : this.color = Color((Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0);
+  }) : this.color = HexColor.fromHex(serverColor);
 
   factory DataSource.fromJson(Map<String, dynamic> json) => _$DataSourceFromJson(json);
 

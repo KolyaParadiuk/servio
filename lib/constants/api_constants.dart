@@ -9,6 +9,8 @@ const kIsReport = "IsReport";
 
 const kName = "Name";
 
+const kColor = "Color";
+
 const kDescription = "Description";
 
 const kType = "Type";

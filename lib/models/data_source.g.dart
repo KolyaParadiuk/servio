@@ -11,6 +11,7 @@ DataSource _$DataSourceFromJson(Map<String, dynamic> json) {
     id: json['ID'] as int,
     name: json['Name'] as String,
     type: json['Type'] as int,
+    serverColor: json['Color'] as String,
     isActive: json['isActive'] as bool?,
   );
 }
@@ -20,5 +21,6 @@ Map<String, dynamic> _$DataSourceToJson(DataSource instance) =>
       'ID': instance.id,
       'Name': instance.name,
       'isActive': instance.isActive,
+      'Color': instance.serverColor,
       'Type': instance.type,
     };
