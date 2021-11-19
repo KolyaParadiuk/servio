@@ -22,7 +22,13 @@ class GroupedBarChart extends StatelessWidget {
         labelPadding: 2,
         outsideLabelStyleSpec: charts.TextStyleSpec(fontSize: 7),
       ),
-      domainAxis: new charts.OrdinalAxisSpec(),
+      domainAxis: new charts.OrdinalAxisSpec(
+        renderSpec: charts.SmallTickRendererSpec(
+          labelRotation: 75,
+          // labelRotation: -90,
+          // labelAnchor: charts.TickLabelAnchor.before,
+        ),
+      ),
       behaviors: [
         new charts.ChartTitle(title,
             subTitle: subTitle,
