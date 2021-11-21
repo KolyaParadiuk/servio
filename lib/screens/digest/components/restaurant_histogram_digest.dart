@@ -80,44 +80,53 @@ class RestaurantHistogramDigestChart extends StatelessWidget {
           ));
   }
 
-  List<charts.Series<RestaurantDigest, String>> _createSeries({
+  List<charts.Series<RestaurantDigestData, String>> _createSeries({
     required num? Function(RestaurantDigestData) measureFn,
     required List<DataSource> dataSources,
     required String id,
   }) {
+    final List<RestaurantDigestData> data = [];
+    final List<RestaurantDigestData> shadowData = [];
+
+    digests.forEach((d) {
+      d.data.forEach((dd) {
+        if (dd.isShadow == true)
+          shadowData.add(dd);
+        else
+          data.add(dd);
+      });
+    });
     return [
-      new charts.Series<RestaurantDigest, String>(
-        colorFn: (RestaurantDigest d, _) {
-          final Color c = dataSources.firstWhere((ds) => ds.id == d.baseExternalId).color;
+      new charts.Series<RestaurantDigestData, String>(
+        colorFn: (RestaurantDigestData d, _) {
+          final Color c = dataSources.firstWhere((ds) => ds.id == d.baseExternalID).color;
           return charts.Color(r: c.red, g: c.green, b: c.blue).lighter.lighter.lighter;
         },
         seriesCategory: 'shadow',
         id: id,
-        domainFn: (RestaurantDigest d, _) => d.title,
-        fillPatternFn: (RestaurantDigest sales, _) => charts.FillPatternType.forwardHatch,
-        measureFn: (RestaurantDigest d, _) => measureFn(d.data.firstWhere((dd) => dd.isShadow == true)),
-        labelAccessorFn: (RestaurantDigest d, _) =>
-            measureFn(d.data.firstWhere((dd) => dd.isShadow == true))?.toStringFixedWithThousandSeparators() ?? "",
-        data: digests,
-        insideLabelStyleAccessorFn: (RestaurantDigest d, _) {
+        domainFn: (RestaurantDigestData d, _) => dataSources.firstWhere((ds) => ds.id == d.baseExternalID).name,
+        fillPatternFn: (RestaurantDigestData sales, _) => charts.FillPatternType.forwardHatch,
+        measureFn: (RestaurantDigestData d, _) => measureFn(d),
+        labelAccessorFn: (RestaurantDigestData d, _) => measureFn(d)?.toStringFixedWithThousandSeparators() ?? "",
+        data: shadowData,
+        insideLabelStyleAccessorFn: (RestaurantDigestData d, _) {
           return new charts.TextStyleSpec(color: charts.MaterialPalette.black);
         },
       ),
-      new charts.Series<RestaurantDigest, String>(
-        colorFn: (RestaurantDigest d, _) {
-          final Color c = dataSources.firstWhere((ds) => ds.id == d.baseExternalId).color;
+      new charts.Series<RestaurantDigestData, String>(
+        colorFn: (RestaurantDigestData d, _) {
+          final Color c = dataSources.firstWhere((ds) => ds.id == d.baseExternalID).color;
           return charts.Color(r: c.red, g: c.green, b: c.blue);
         },
-        insideLabelStyleAccessorFn: (RestaurantDigest d, _) {
+        insideLabelStyleAccessorFn: (RestaurantDigestData d, _) {
           return new charts.TextStyleSpec(color: charts.MaterialPalette.black);
         },
         id: id,
         seriesCategory: 'real',
-        domainFn: (RestaurantDigest d, _) => d.title,
-        measureFn: (RestaurantDigest d, _) => measureFn(d.data.firstWhere((dd) => dd.isShadow == false)), // measureFn,
-        labelAccessorFn: (RestaurantDigest d, _) =>
-            measureFn(d.data.firstWhere((dd) => dd.isShadow == false))?.toStringFixedWithThousandSeparators() ?? "",
-        data: digests,
+        domainFn: (RestaurantDigestData d, _) => dataSources.firstWhere((ds) => ds.id == d.baseExternalID).name,
+        measureFn: (RestaurantDigestData d, _) => measureFn(d), // measureFn,
+        labelAccessorFn: (RestaurantDigestData d, _) => measureFn(d)?.toStringFixedWithThousandSeparators() ?? "",
+        data: data,
       ),
     ];
   }

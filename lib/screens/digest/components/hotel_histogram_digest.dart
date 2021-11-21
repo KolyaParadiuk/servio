@@ -100,41 +100,50 @@ class HotelHistogramDigestChart extends StatelessWidget {
           )));
   }
 
-  List<charts.Series<HotelDigest, String>> _createSeries({
+  List<charts.Series<HotelDigestData, String>> _createSeries({
     required num? Function(HotelDigestData) measureFn,
     required List<DataSource> dataSources,
     required String id,
     // String Function(HotelDigest, int?)? labelAccessorFn,
   }) {
+    final List<HotelDigestData> data = [];
+    final List<HotelDigestData> shadowData = [];
+
+    digests.forEach((d) {
+      d.data.forEach((dd) {
+        if (dd.isShadow == true)
+          shadowData.add(dd.copyWith(baseExternalID: d.baseExternalId));
+        else
+          data.add(dd.copyWith(baseExternalID: d.baseExternalId));
+      });
+    });
     return [
-      new charts.Series<HotelDigest, String>(
-        colorFn: (HotelDigest d, _) {
-          final Color c = dataSources.firstWhere((ds) => ds.id == d.baseExternalId).color;
+      new charts.Series<HotelDigestData, String>(
+        colorFn: (HotelDigestData d, _) {
+          final Color c = dataSources.firstWhere((ds) => ds.id == d.baseExternalID).color;
           return charts.Color(r: c.red, g: c.green, b: c.blue).lighter.lighter.lighter;
         },
         id: id,
-        fillPatternFn: (HotelDigest sales, _) => charts.FillPatternType.forwardHatch,
-        domainFn: (HotelDigest d, _) => d.title,
-        measureFn: (HotelDigest d, _) => measureFn(d.data.firstWhere((dd) => dd.isShadow == true)),
-        labelAccessorFn: (HotelDigest d, _) =>
-            measureFn(d.data.firstWhere((dd) => dd.isShadow == true))?.toStringFixedWithThousandSeparators() ?? "",
-        data: digests,
-        insideLabelStyleAccessorFn: (HotelDigest d, _) {
+        fillPatternFn: (HotelDigestData sales, _) => charts.FillPatternType.forwardHatch,
+        domainFn: (HotelDigestData d, _) => dataSources.firstWhere((ds) => ds.id == d.baseExternalID).name,
+        measureFn: (HotelDigestData d, _) => measureFn(d),
+        labelAccessorFn: (HotelDigestData d, _) => measureFn(d)?.toStringFixedWithThousandSeparators() ?? "",
+        data: data,
+        insideLabelStyleAccessorFn: (HotelDigestData d, _) {
           return new charts.TextStyleSpec(color: charts.MaterialPalette.black);
         },
       ),
-      new charts.Series<HotelDigest, String>(
-        colorFn: (HotelDigest d, _) {
-          final Color c = dataSources.firstWhere((ds) => ds.id == d.baseExternalId).color;
+      new charts.Series<HotelDigestData, String>(
+        colorFn: (HotelDigestData d, _) {
+          final Color c = dataSources.firstWhere((ds) => ds.id == d.baseExternalID).color;
           return charts.Color(r: c.red, g: c.green, b: c.blue);
         },
         id: id,
-        domainFn: (HotelDigest d, _) => d.title,
-        measureFn: (HotelDigest d, _) => measureFn(d.data.firstWhere((dd) => dd.isShadow == false)),
-        labelAccessorFn: (HotelDigest d, _) =>
-            measureFn(d.data.firstWhere((dd) => dd.isShadow == false))?.toStringFixedWithThousandSeparators() ?? "",
-        data: digests,
-        insideLabelStyleAccessorFn: (HotelDigest d, _) {
+        domainFn: (HotelDigestData d, _) => dataSources.firstWhere((ds) => ds.id == d.baseExternalID).name,
+        measureFn: (HotelDigestData d, _) => measureFn(d),
+        labelAccessorFn: (HotelDigestData d, _) => measureFn(d)?.toStringFixedWithThousandSeparators() ?? "",
+        data: shadowData,
+        insideLabelStyleAccessorFn: (HotelDigestData d, _) {
           return new charts.TextStyleSpec(color: charts.MaterialPalette.black);
         },
       ),

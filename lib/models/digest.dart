@@ -88,23 +88,62 @@ class HotelDigestData {
   final double avrOnAllRoom;
   @JsonKey(name: kIsShadow)
   final bool? isShadow;
-  HotelDigestData(
-      {this.loading,
-      this.date,
-      this.dayOfWeekTitle,
-      required this.roomsInExploitation,
-      required this.roomsInSale,
-      required this.roomsOnRepairNotSale,
-      required this.roomsInServiceUse,
-      required this.roomsOccupied,
-      required this.avrOnAllRoom,
-      required this.coefficientRooms,
-      required this.dwellingPayment,
-      this.isShadow,
-      this.sot});
+
+  @JsonKey(name: kBaseExternalID)
+  final int? baseExternalID;
+  HotelDigestData({
+    this.loading,
+    this.date,
+    this.dayOfWeekTitle,
+    required this.roomsInExploitation,
+    required this.roomsInSale,
+    required this.roomsOnRepairNotSale,
+    required this.roomsInServiceUse,
+    required this.roomsOccupied,
+    required this.avrOnAllRoom,
+    required this.coefficientRooms,
+    required this.dwellingPayment,
+    this.isShadow,
+    this.sot,
+    this.baseExternalID,
+  });
   factory HotelDigestData.fromJson(Map<String, dynamic> json) => _$HotelDigestDataFromJson(json);
 
   Map<String, dynamic> toJson() => _$HotelDigestDataToJson(this);
+
+  HotelDigestData copyWith({
+    loading,
+    date,
+    dayOfWeekTitle,
+    roomsInExploitation,
+    roomsInSale,
+    roomsOnRepairNotSale,
+    roomsInServiceUse,
+    roomsOccupied,
+    avrOnAllRoom,
+    coefficientRooms,
+    dwellingPayment,
+    isShadow,
+    sot,
+    baseExternalID,
+  }) {
+    return HotelDigestData(
+      loading: loading ?? this.loading,
+      date: date ?? this.date,
+      dayOfWeekTitle: dayOfWeekTitle ?? this.dayOfWeekTitle,
+      roomsInExploitation: roomsInExploitation ?? this.roomsInExploitation,
+      roomsInSale: roomsInSale ?? this.roomsInSale,
+      roomsOnRepairNotSale: roomsOnRepairNotSale ?? this.roomsOnRepairNotSale,
+      roomsInServiceUse: roomsInServiceUse ?? this.roomsInServiceUse,
+      roomsOccupied: roomsOccupied ?? this.roomsOccupied,
+      avrOnAllRoom: avrOnAllRoom ?? this.avrOnAllRoom,
+      coefficientRooms: coefficientRooms ?? this.coefficientRooms,
+      dwellingPayment: dwellingPayment ?? this.dwellingPayment,
+      isShadow: isShadow ?? this.isShadow,
+      sot: sot ?? this.sot,
+      baseExternalID: baseExternalID ?? this.baseExternalID,
+    );
+  }
 }
 
 @JsonSerializable(explicitToJson: true)

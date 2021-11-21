@@ -84,30 +84,35 @@ class RestaurantDigestChart extends StatelessWidget {
     required List<DataSource> dataSources,
   }) {
     final List<charts.Series<RestaurantDigestData, DateTime>> series = [];
-    series.addAll(digests.map((d) {
+
+    digests.forEach((d) {
       final Color c = dataSources.firstWhere((ds) => ds.id == d.baseExternalId).color; // ?? Colors.indigo;
       final color = charts.Color(r: c.red, g: c.green, b: c.blue);
-      return charts.Series<RestaurantDigestData, DateTime>(
-        id: d.title,
-        seriesColor: color,
-        data: d.data.where((element) => element.isShadow == false).toList(),
-        domainFn: (RestaurantDigestData dd, _) => dd.closedDate!,
-        measureFn: measureFn,
-      );
-    }).toList());
-    series.addAll(digests.map((d) {
-      final Color c = dataSources.firstWhere((ds) => ds.id == d.baseExternalId).color; // ?? Colors.indigo;
-      final color = charts.Color(r: c.red, g: c.green, b: c.blue);
-      return charts.Series<RestaurantDigestData, DateTime>(
-        id: d.title + "'",
-        seriesColor: color,
-        data: d.data.where((element) => element.isShadow == true).toList(),
-        domainFn: (RestaurantDigestData dd, _) => dd.closedDate!,
-        measureFn: measureFn,
-        dashPatternFn: (RestaurantDigestData sales, _) => [2, 2],
-        strokeWidthPxFn: (RestaurantDigestData sales, _) => 2.0,
-      );
-    }).toList());
+      final data = d.data.where((element) => element.isShadow == false).toList();
+      final shadowData = d.data.where((element) => element.isShadow == true).toList();
+      if (data.isNotEmpty) {
+        series.add(charts.Series<RestaurantDigestData, DateTime>(
+          id: d.title,
+          seriesColor: color,
+          data: data,
+          domainFn: (RestaurantDigestData dd, _) => dd.closedDate!,
+          measureFn: measureFn,
+        ));
+      }
+      if (shadowData.isNotEmpty) {
+        series.add(
+          charts.Series<RestaurantDigestData, DateTime>(
+            id: d.title + "'",
+            seriesColor: color,
+            data: shadowData,
+            domainFn: (RestaurantDigestData dd, _) => dd.closedDate!,
+            measureFn: measureFn,
+            dashPatternFn: (RestaurantDigestData sales, _) => [2, 2],
+            strokeWidthPxFn: (RestaurantDigestData sales, _) => 2.0,
+          ),
+        );
+      }
+    });
 
     return series;
   }
